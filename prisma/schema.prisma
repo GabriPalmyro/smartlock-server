@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// prisma/schema.prisma
+
+model UserType {
+  id        Int      @id @default(autoincrement())
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User[]
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String          @unique
+  password      String
+  teacherCode   Int             @map("teacher_code")
+  userType      UserType?       @relation(fields: [userTypeId], references: [id], onDelete: SetNull)
+  class         Class[]
+  temporaryCode TemporaryCode[]
+  access        Access[]
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  userTypeId Int? @map("user_type")
+}
+
+model Class {
+  id               Int        @id @default(autoincrement())
+  subject          String
+  dayOfTheWeek     Int        @map("day_of_week")
+  initialDay       DateTime   @map("initial_day")
+  endDay           DateTime   @map("end_day")
+  initialTimeClass DateTime   @map("initial_time")
+  endTimeClass     DateTime   @map("end_time")
+  teacher          User       @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  classroom        Classroom? @relation(fields: [classroomId], references: [id])
+
+  teacherId   Int  @map("teacher_id")
+  classroomId Int? @map("classroom_id")
+}
+
+model Classroom {
+  id            Int             @id @default(autoincrement())
+  name          String
+  block         String
+  Class         Class[]
+  lock          Lock?
+  temporaryCode TemporaryCode[]
+  access        Access[]
+}
+
+model Lock {
+  id          Int        @id @default(autoincrement())
+  name        String
+  state       Boolean    @default(true) // TRUE - CLOSED | FALSE - OPEN
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
+  classroomId Int?       @unique @map("classroom_id")
+}
+
+model TemporaryCode {
+  id          Int        @id @default(autoincrement())
+  code        String
+  initialDate DateTime   @map("initial_data")
+  endDate     DateTime   @map("end_date")
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+  access      Access[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  classroomId Int? @map("classroom_id")
+  userId      Int  @map("user_id")
+}
+
+model Access {
+  id         Int            @id @default(autoincrement())
+  user       User           @relation(fields: [userId], references: [id])
+  code       TemporaryCode? @relation(fields: [temporaryCodeId], references: [id])
+  accessType String         @map("access_type")
+  classroom  Classroom      @relation(fields: [classroomId], references: [id])
+  openTime   DateTime       @default(now()) @map("open_time")
+  closeTime  DateTime?      @map("close_time")
+
+  userId          Int  @map("user_id")
+  temporaryCodeId Int? @map("temporary_code_id")
+  classroomId     Int  @map("classroom_id")
+}
