@@ -1,10 +1,16 @@
+import { DatabaseModule } from '@infra/database/database.module';
+import { HttpModule } from '@infra/http/http.module';
+import { MqttModule } from '@infra/mqtt/mqtt.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    HttpModule,
+    DatabaseModule,
+    MqttModule,
+  ],
+  providers: [],
 })
 export class AppModule {}

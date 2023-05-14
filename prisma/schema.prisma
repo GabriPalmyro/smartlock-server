@@ -24,7 +24,7 @@ model User {
   name          String
   email         String          @unique
   password      String
-  teacherCode   Int             @map("teacher_code")
+  teacherCode   String          @map("teacher_code")
   userType      UserType?       @relation(fields: [userTypeId], references: [id], onDelete: SetNull)
   class         Class[]
   temporaryCode TemporaryCode[]
