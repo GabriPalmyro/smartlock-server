@@ -1,6 +1,6 @@
 import { User } from '@app/entities/user';
 import { UserRepository } from '@app/repositories/user/user-repository';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 @Injectable()
@@ -25,32 +25,57 @@ export class PrismaUserRepositories implements UserRepository {
     return users.map(PrismaUserMapper.toDomain);
   }
 
-  findById(userId: number): Promise<User> {
-    throw new Error('Method not implemented.');
+  async findById(userId: number): Promise<User> {
+    const user = await this.prismaService.user
+      .findUniqueOrThrow({
+        where: {
+          id: userId,
+        },
+      })
+      .catch(() => {
+        throw new HttpException(
+          'Não foi possível encontrar um usuário com esse id',
+          HttpStatus.NOT_FOUND,
+        );
+      });
+    return PrismaUserMapper.toDomain(user);
   }
-  findByEmail(email: string): Promise<User> {
-    throw new Error('Method not implemented.');
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return PrismaUserMapper.toDomain(user);
   }
+
   update(userId: number, name: string, nickname: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  updateHashRT(userId: number, hash: string): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async delete(userId: number): Promise<void> {
+    await this.prismaService.user.delete({
+      where: {
+        id: userId,
+      },
+    });
   }
-  deleteHashRT(userId: number): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  updateVerifiedAt(userId: number): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  delete(user: User): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  updatePassword(
-    userId: number,
-    password: string,
-    newPassword: string,
-  ): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async updatePassword(userId: number, newPassword: string): Promise<void> {
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: newPassword,
+        updatedAt: Date(),
+      },
+    });
   }
 }

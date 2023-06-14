@@ -1,18 +1,31 @@
 import { CreateUser } from '@app/use-cases/create-user';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { GetUserById } from '@app/use-cases/get-user-by-id';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserBody } from '../dtos/create-user-body';
-import { UserIdViewModel } from '../view-models/user-id-view-model';
+import { UserViewModel } from '../view-models/user-view-model';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private createUser: CreateUser) {}
+  constructor(
+    private createUser: CreateUser,
+    private getUserById: GetUserById,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     description:
-      'Cria um novo usuário no banco de dados e envia o email de verificação de conta. E retorna um ID do usuário criado',
+      'Cria um novo usuário no banco de dados. E retorna um ID do usuário criado',
   })
   @ApiResponse({
     status: 201,
@@ -32,9 +45,9 @@ export class UserController {
     description:
       'Não foi possível criar uma nova conta com as credenciais fornecidas.',
   })
-  async create(@Body() body: CreateUserBody): Promise<UserIdViewModel> {
+  async create(@Body() body: CreateUserBody): Promise<UserViewModel> {
     const { email, name, password, teacherCode, userTypeId } = body;
-    const id = await this.createUser.execute({
+    const { user } = await this.createUser.execute({
       email,
       name,
       password,
@@ -42,6 +55,27 @@ export class UserController {
       userTypeId,
     });
 
-    return { id: id };
+    return UserViewModel.toHTTP(user);
+  }
+
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    description: 'Busca um usuário pelo id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário retornado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Usuário não encontrado',
+  })
+  async findUserById(@Param('id') userId: number): Promise<UserViewModel> {
+    const { user } = await this.getUserById.execute({
+      userId,
+    });
+
+    return UserViewModel.toHTTP(user);
   }
 }

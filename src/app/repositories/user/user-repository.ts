@@ -10,13 +10,6 @@ export abstract class UserRepository {
     name: string,
     nickname: string,
   ): Promise<void>;
-  abstract updateHashRT(userId: number, hash: string): Promise<void>;
-  abstract deleteHashRT(userId: number): Promise<void>;
-  abstract updateVerifiedAt(userId: number): Promise<void>;
-  abstract delete(user: User): Promise<void>;
-  abstract updatePassword(
-    userId: number,
-    password: string,
-    newPassword: string,
-  ): Promise<void>;
+  abstract delete(userId: number): Promise<void>;
+  abstract updatePassword(userId: number, newPassword: string): Promise<void>;
 }

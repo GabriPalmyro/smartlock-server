@@ -1,5 +1,6 @@
 import { UserRepository } from '@app/repositories/user/user-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/app/entities/user';
 
 interface CreateUserRequest {
@@ -30,10 +31,12 @@ export class CreateUser {
       );
     }
 
+    const hashPassword = await bcrypt.hash(password, 10);
+
     const user = new User({
       name: name,
       email: email,
-      password: password,
+      password: hashPassword,
       teacherCode: teacherCode,
       userTypeId: userTypeId,
     });

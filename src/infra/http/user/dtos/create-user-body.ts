@@ -47,7 +47,7 @@ export class CreateUserBody {
   @IsNumber()
   @ApiProperty({
     description: 'ID do tipo de usuário selecionado',
-    example: 25
+    example: 1
   })
   userTypeId: number;
 }
