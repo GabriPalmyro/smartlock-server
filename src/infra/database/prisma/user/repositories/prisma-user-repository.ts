@@ -55,6 +55,20 @@ export class PrismaUserRepositories implements UserRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
+  async findByCode(code: string): Promise<User> {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        teacherCode: code,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return PrismaUserMapper.toDomain(user);
+  }
+
   update(userId: number, name: string, nickname: string): Promise<void> {
     throw new Error('Method not implemented.');
   }

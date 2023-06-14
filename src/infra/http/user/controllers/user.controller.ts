@@ -1,5 +1,6 @@
 import { CreateUser } from '@app/use-cases/create-user';
 import { GetUserById } from '@app/use-cases/get-user-by-id';
+import { LoginWithCodeAndPassword } from '@app/use-cases/login-user-code-password';
 import {
   Body,
   Controller,
@@ -11,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserBody } from '../dtos/create-user-body';
+import { LoginUserBody } from '../dtos/login-user-body';
 import { UserViewModel } from '../view-models/user-view-model';
 
 @ApiTags('user')
@@ -19,6 +21,7 @@ export class UserController {
   constructor(
     private createUser: CreateUser,
     private getUserById: GetUserById,
+    private loginWithCodeAndPassword: LoginWithCodeAndPassword,
   ) {}
 
   @Post()
@@ -53,6 +56,30 @@ export class UserController {
       password,
       teacherCode,
       userTypeId,
+    });
+
+    return UserViewModel.toHTTP(user);
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    description: 'Faz o login do usuário com as credenciais',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário retornado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Usuário não encontrado',
+  })
+  async login(@Body() body: LoginUserBody): Promise<UserViewModel> {
+    const { code, password } = body;
+
+    const { user } = await this.loginWithCodeAndPassword.execute({
+      code,
+      password,
     });
 
     return UserViewModel.toHTTP(user);

@@ -3,25 +3,25 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/app/entities/user';
 
-interface LoginWithEmailAndPasswordRequest {
-  email: string;
+interface LoginWithCodeAndPasswordRequest {
+  code: string;
   password: string;
 }
 
-interface LoginWithEmailAndPasswordResponse {
+interface LoginWithCodeAndPasswordResponse {
   user: User;
 }
 
 @Injectable()
-export class LoginWithEmailAndPassword {
+export class LoginWithCodeAndPassword {
   constructor(private userRepository: UserRepository) {}
 
   async execute(
-    request: LoginWithEmailAndPasswordRequest,
-  ): Promise<LoginWithEmailAndPasswordResponse> {
-    const { email, password } = request;
+    request: LoginWithCodeAndPasswordRequest,
+  ): Promise<LoginWithCodeAndPasswordResponse> {
+    const { code, password } = request;
 
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByCode(code);
 
     if (!user)
       throw new HttpException(
