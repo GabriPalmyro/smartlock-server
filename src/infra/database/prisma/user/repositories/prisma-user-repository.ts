@@ -1,5 +1,5 @@
 import { User } from '@app/entities/user';
-import { UserRepository } from '@app/repositories/user/user-repository';
+import { UserRepository } from '@app/repositories/user-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';

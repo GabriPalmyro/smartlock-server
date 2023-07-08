@@ -1,4 +1,4 @@
-import { UserRepository } from '@app/repositories/user/user-repository';
+import { UserRepository } from '@app/repositories/user-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/app/entities/user';

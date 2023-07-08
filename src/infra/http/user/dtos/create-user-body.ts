@@ -42,7 +42,7 @@ export class CreateUserBody {
     description: 'Número do prontuário de acesso do usuário',
     example: 'BI300XXXX'
   })
-  teacherCode: string;
+  recordCode: string;
 
   @IsNumber()
   @ApiProperty({

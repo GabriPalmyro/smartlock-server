@@ -1,3 +1,6 @@
+import { Classroom } from './Classroom';
+import { User } from './User';
+
 export interface ClassProps {
   id?: number;
   subject: string;
@@ -6,8 +9,8 @@ export interface ClassProps {
   endDay: Date;
   initialTimeClass: Date;
   endTimeClass: Date;
-  teacherId: number;
-  classroomId: number;
+  teacher?: User;
+  classroom?: Classroom;
 }
 
 export class Class {
@@ -60,7 +63,7 @@ export class Class {
   }
 
   public get initialTimeClass(): Date {
-    return this.props.endDay;
+    return this.props.initialTimeClass;
   }
 
   public set initialTimeClass(initialTimeClass: Date) {
@@ -75,19 +78,19 @@ export class Class {
     this.props.endTimeClass = endTimeClass;
   }
 
-  public get teacher(): number {
-    return this.props.teacherId;
+  public get teacher(): User {
+    return this.props.teacher;
   }
 
-  public set teacher(teacherId: number) {
-    this.props.teacherId = teacherId;
+  public set teacher(teacher: User) {
+    this.props.teacher = teacher;
   }
 
-  public get classroom(): number {
-    return this.props.classroomId;
+  public get classroom(): Classroom | undefined {
+    return this.props.classroom;
   }
 
-  public set classroom(classroomId: number) {
-    this.props.classroomId = classroomId;
+  public set classroom(classroom: Classroom | undefined) {
+    this.props.classroom = classroom;
   }
 }

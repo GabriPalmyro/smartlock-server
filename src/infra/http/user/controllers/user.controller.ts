@@ -1,6 +1,6 @@
-import { CreateUser } from '@app/use-cases/create-user';
-import { GetUserById } from '@app/use-cases/get-user-by-id';
-import { LoginWithCodeAndPassword } from '@app/use-cases/login-user-code-password';
+import { CreateUser } from '@app/use-cases/user/create-user';
+import { GetUserById } from '@app/use-cases/user/get-user-by-id';
+import { LoginWithCodeAndPassword } from '@app/use-cases/user/login-user-code-password';
 import {
   Body,
   Controller,
@@ -49,12 +49,12 @@ export class UserController {
       'Não foi possível criar uma nova conta com as credenciais fornecidas.',
   })
   async create(@Body() body: CreateUserBody): Promise<UserViewModel> {
-    const { email, name, password, teacherCode, userTypeId } = body;
+    const { email, name, password, recordCode, userTypeId } = body;
     const { user } = await this.createUser.execute({
       email,
       name,
       password,
-      teacherCode,
+      recordCode,
       userTypeId,
     });
 

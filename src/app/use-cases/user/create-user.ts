@@ -1,4 +1,4 @@
-import { UserRepository } from '@app/repositories/user/user-repository';
+import { UserRepository } from '@app/repositories/user-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/app/entities/user';
@@ -7,7 +7,7 @@ interface CreateUserRequest {
   email: string;
   name: string;
   password: string;
-  teacherCode: string;
+  recordCode: string;
   userTypeId: number;
 }
 
@@ -20,7 +20,7 @@ export class CreateUser {
   constructor(private userRepository: UserRepository) {}
 
   async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
-    const { name, email, teacherCode, userTypeId, password } = request;
+    const { name, email, recordCode, userTypeId, password } = request;
 
     const userExistsByEmail = await this.userRepository.findByEmail(email);
 
@@ -37,7 +37,7 @@ export class CreateUser {
       name: name,
       email: email,
       password: hashPassword,
-      teacherCode: teacherCode,
+      teacherCode: recordCode,
       userTypeId: userTypeId,
     });
 
