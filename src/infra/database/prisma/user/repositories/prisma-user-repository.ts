@@ -7,7 +7,7 @@ import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 export class PrismaUserRepositories implements UserRepository {
   constructor(private prismaService: PrismaService) {}
 
-  async create(user: User): Promise<number> {
+  async create(user: User): Promise<string> {
     const userPrisma = PrismaUserMapper.toPrisma(user);
 
     const userCreated = await this.prismaService.user.create({
@@ -25,7 +25,7 @@ export class PrismaUserRepositories implements UserRepository {
     return users.map(PrismaUserMapper.toDomain);
   }
 
-  async findById(userId: number): Promise<User> {
+  async findById(userId: string): Promise<User> {
     const user = await this.prismaService.user
       .findUniqueOrThrow({
         where: {
@@ -58,7 +58,7 @@ export class PrismaUserRepositories implements UserRepository {
   async findByCode(code: string): Promise<User> {
     const user = await this.prismaService.user.findFirst({
       where: {
-        teacherCode: code,
+        code: code,
       },
     });
 
@@ -69,11 +69,11 @@ export class PrismaUserRepositories implements UserRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
-  update(userId: number, name: string, nickname: string): Promise<void> {
+  update(userId: string, name: string, nickname: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  async delete(userId: number): Promise<void> {
+  async delete(userId: string): Promise<void> {
     await this.prismaService.user.delete({
       where: {
         id: userId,
@@ -81,7 +81,7 @@ export class PrismaUserRepositories implements UserRepository {
     });
   }
 
-  async updatePassword(userId: number, newPassword: string): Promise<void> {
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
     await this.prismaService.user.update({
       where: {
         id: userId,

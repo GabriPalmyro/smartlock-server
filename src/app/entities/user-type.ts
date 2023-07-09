@@ -1,5 +1,5 @@
 export interface UserTypeProps {
-  id?: number;
+  id?: string;
   type: string;
   createdAt: Date;
 }
@@ -13,11 +13,11 @@ export class UserType {
     };
   }
 
-  public get id(): number {
+  public get id(): string {
     return this.props.id;
   }
 
-  public set id(id: number) {
+  public set id(id: string) {
     this.props.id = id;
   }
 

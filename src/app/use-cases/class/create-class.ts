@@ -9,8 +9,8 @@ interface CreateClassRequest {
   initialTimeClass: Date;
   endTimeClass: Date;
   dayOfTheWeek: number;
-  teacherId: number | null;
-  classroomId: number | null;
+  teacherId: string | null;
+  classroomId: string | null;
 }
 
 interface CreateClassResponse {

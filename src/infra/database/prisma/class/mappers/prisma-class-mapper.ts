@@ -4,7 +4,7 @@ import { PrismaUserMapper } from '../../user/mappers/prisma-user-mapper';
 import { ClassWithTeacherAndClassroom } from '../types/class-with-teacher-classroom-type';
 
 export class PrismaClassMapper {
-  static toPrisma(classModel: Class, teacherId: number, classroomId: number) {
+  static toPrisma(classModel: Class, teacherId: string, classroomId: string) {
     return {
       subject: classModel.subject,
       dayOfTheWeek: classModel.dayOfTheWeek,

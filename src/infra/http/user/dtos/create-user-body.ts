@@ -2,7 +2,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsNumber,
   IsString,
   Length,
   Matches
@@ -42,12 +41,12 @@ export class CreateUserBody {
     description: 'Número do prontuário de acesso do usuário',
     example: 'BI300XXXX'
   })
-  recordCode: string;
+  code: string;
 
-  @IsNumber()
+  @IsString()
   @ApiProperty({
     description: 'ID do tipo de usuário selecionado',
-    example: 1
+    example: '6716f045-b1d3-4802-aed2-b34323af9f4'
   })
-  userTypeId: number;
+  userTypeId: string;
 }

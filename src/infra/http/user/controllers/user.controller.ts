@@ -1,5 +1,6 @@
 import { CreateUser } from '@app/use-cases/user/create-user';
 import { GetUserById } from '@app/use-cases/user/get-user-by-id';
+import { ListAllUsers } from '@app/use-cases/user/list-all-users';
 import { LoginWithCodeAndPassword } from '@app/use-cases/user/login-user-code-password';
 import {
   Body,
@@ -22,6 +23,7 @@ export class UserController {
     private createUser: CreateUser,
     private getUserById: GetUserById,
     private loginWithCodeAndPassword: LoginWithCodeAndPassword,
+    private listAllUsers: ListAllUsers,
   ) {}
 
   @Post()
@@ -49,12 +51,12 @@ export class UserController {
       'Não foi possível criar uma nova conta com as credenciais fornecidas.',
   })
   async create(@Body() body: CreateUserBody): Promise<UserViewModel> {
-    const { email, name, password, recordCode, userTypeId } = body;
+    const { email, name, password, code, userTypeId } = body;
     const { user } = await this.createUser.execute({
       email,
       name,
       password,
-      recordCode,
+      code,
       userTypeId,
     });
 
@@ -85,6 +87,13 @@ export class UserController {
     return UserViewModel.toHTTP(user);
   }
 
+  @Get('all')
+  async listAll(): Promise<UserViewModel[]> {
+    const { users } = await this.listAllUsers.execute();
+
+    return users.map(UserViewModel.toHTTP);
+  }
+
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -98,7 +107,7 @@ export class UserController {
     status: HttpStatus.NOT_FOUND,
     description: 'Usuário não encontrado',
   })
-  async findUserById(@Param('id') userId: number): Promise<UserViewModel> {
+  async findUserById(@Param('id') userId: string): Promise<UserViewModel> {
     const { user } = await this.getUserById.execute({
       userId,
     });

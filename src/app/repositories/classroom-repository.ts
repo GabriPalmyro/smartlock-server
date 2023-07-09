@@ -1,11 +1,14 @@
 import { Classroom } from '@app/entities/classroom';
+import { ClassroomWithLockAccessClass } from '@infra/database/prisma/classroom/types/classroom-with-lock-access-class';
 
 export abstract class ClassroomRepository {
-  abstract create(classroom: Classroom): Promise<number>;
+  abstract create(classroom: Classroom): Promise<string>;
 
   abstract listAll(): Promise<Classroom[]> | null;
 
-  abstract findById(classroomId: number): Promise<Classroom> | null;
+  abstract findById(
+    classroomId: string,
+  ): Promise<ClassroomWithLockAccessClass> | null;
 
   abstract listByBlock(block: string): Promise<Classroom[]> | null;
 
@@ -15,10 +18,10 @@ export abstract class ClassroomRepository {
   ): Promise<Classroom> | null;
 
   abstract update(
-    classroomId: number,
+    classroomId: string,
     block: string,
     name: string,
   ): Promise<void>;
 
-  abstract delete(classroomId: number): Promise<void>;
+  abstract delete(classroomId: string): Promise<void>;
 }

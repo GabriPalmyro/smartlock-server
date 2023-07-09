@@ -3,7 +3,7 @@ import { Classroom } from './Classroom';
 import { User } from './User';
 
 export interface TemporaryCodeProps {
-  id?: number;
+  id?: string;
   code: string;
   initialDate: Date;
   endDate: Date;
@@ -22,11 +22,11 @@ export class TemporaryCode {
     };
   }
 
-  public get id(): number {
+  public get id(): string {
     return this.props.id;
   }
 
-  public set id(id: number) {
+  public set id(id: string) {
     this.props.id = id;
   }
 

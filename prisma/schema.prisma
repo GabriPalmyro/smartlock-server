@@ -11,20 +11,19 @@ datasource db {
 }
 
 // prisma/schema.prisma
-
 model UserType {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   type      String
   createdAt DateTime @default(now()) @map("created_at")
   user      User[]
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(uuid())
   name          String
   email         String          @unique
   password      String
-  teacherCode   String          @map("teacher_code")
+  code          String          @map("code")
   userType      UserType?       @relation(fields: [userTypeId], references: [id], onDelete: SetNull)
   class         Class[]
   temporaryCode TemporaryCode[]
@@ -32,11 +31,11 @@ model User {
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
-  userTypeId Int? @map("user_type")
+  userTypeId String? @map("user_type")
 }
 
 model Class {
-  id               Int        @id @default(autoincrement())
+  id               String     @id @default(uuid())
   subject          String
   dayOfTheWeek     Int        @map("day_of_week")
   initialDay       DateTime   @map("initial_day")
@@ -46,12 +45,12 @@ model Class {
   teacher          User       @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   classroom        Classroom? @relation(fields: [classroomId], references: [id])
 
-  teacherId   Int  @map("teacher_id")
-  classroomId Int? @map("classroom_id")
+  teacherId   String  @map("teacher_id")
+  classroomId String? @map("classroom_id")
 }
 
 model Classroom {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(uuid())
   name          String
   block         String
   Class         Class[]
@@ -61,15 +60,15 @@ model Classroom {
 }
 
 model Lock {
-  id          Int        @id @default(autoincrement())
+  id          String     @id @default(uuid())
   name        String
   state       Boolean    @default(true) // TRUE - CLOSED | FALSE - OPEN
   classroom   Classroom? @relation(fields: [classroomId], references: [id])
-  classroomId Int?       @unique @map("classroom_id")
+  classroomId String?    @unique @map("classroom_id")
 }
 
 model TemporaryCode {
-  id          Int        @id @default(autoincrement())
+  id          String     @id @default(uuid())
   code        String
   initialDate DateTime   @map("initial_data")
   endDate     DateTime   @map("end_date")
@@ -78,12 +77,12 @@ model TemporaryCode {
   access      Access[]
   createdAt   DateTime   @default(now()) @map("created_at")
 
-  classroomId Int? @map("classroom_id")
-  userId      Int  @map("user_id")
+  classroomId String? @map("classroom_id")
+  userId      String  @map("user_id")
 }
 
 model Access {
-  id         Int            @id @default(autoincrement())
+  id         String         @id @default(uuid())
   user       User           @relation(fields: [userId], references: [id])
   code       TemporaryCode? @relation(fields: [temporaryCodeId], references: [id])
   accessType String         @map("access_type")
@@ -91,7 +90,7 @@ model Access {
   openTime   DateTime       @default(now()) @map("open_time")
   closeTime  DateTime?      @map("close_time")
 
-  userId          Int  @map("user_id")
-  temporaryCodeId Int? @map("temporary_code_id")
-  classroomId     Int  @map("classroom_id")
+  userId          String  @map("user_id")
+  temporaryCodeId String? @map("temporary_code_id")
+  classroomId     String  @map("classroom_id")
 }

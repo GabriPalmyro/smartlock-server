@@ -1,11 +1,11 @@
 export interface AccessProps {
-  id?: number;
-  userId: number;
-  code?: number;
+  id?: string;
+  userId: string;
+  code?: string;
   accessType: string;
   openTime: Date;
   closeTime: Date;
-  classroomId?: number;
+  classroomId?: string;
 }
 
 export class Access {
@@ -17,27 +17,27 @@ export class Access {
     };
   }
 
-  public get id(): number {
+  public get id(): string {
     return this.props.id;
   }
 
-  public set id(id: number) {
+  public set id(id: string) {
     this.props.id = id;
   }
 
-  public get user(): number {
+  public get user(): string {
     return this.props.userId;
   }
 
-  public set user(user: number) {
+  public set user(user: string) {
     this.props.userId = user;
   }
 
-  public get code(): number {
+  public get code(): string {
     return this.props.code;
   }
 
-  public set code(code: number) {
+  public set code(code: string) {
     this.props.code = code;
   }
 
@@ -49,6 +49,14 @@ export class Access {
     this.props.accessType = accessType;
   }
 
+  public get openTime(): Date {
+    return this.props.openTime;
+  }
+
+  public set openTime(openTime: Date) {
+    this.props.openTime = openTime;
+  }
+
   public get closeTime(): Date {
     return this.props.closeTime;
   }
@@ -57,11 +65,11 @@ export class Access {
     this.props.closeTime = closeTime;
   }
 
-  public get classroomId(): number {
+  public get classroomId(): string {
     return this.props.classroomId;
   }
 
-  public set classroomId(classroomId: number) {
+  public set classroomId(classroomId: string) {
     this.props.classroomId = classroomId;
   }
 }

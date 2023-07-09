@@ -1,6 +1,15 @@
 import { CreateClass } from '@app/use-cases/class/create-class';
+import { ListClassFromTodayByTeacher } from '@app/use-cases/class/list-today-by-teacher';
 import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateClassBody } from '../dtos/create-class-body';
 import { ClassViewModel } from '../view-models/class-view-model';
@@ -11,6 +20,7 @@ export class ClassController {
   constructor(
     readonly mqttService: MqttService,
     private createClass: CreateClass,
+    private listClassFromTodayByTeacher: ListClassFromTodayByTeacher,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
@@ -39,5 +49,17 @@ export class ClassController {
     });
 
     return ClassViewModel.toHTTP(classCreated);
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Get('teacher/:teacherId/today')
+  async classesFromTodayByTeacher(
+    @Param('teacherId') teacherId: string,
+  ): Promise<ClassViewModel> {
+    const { classes } = await this.listClassFromTodayByTeacher.execute({
+      teacherId,
+    });
+
+    return classes.map(ClassViewModel.toHTTP);
   }
 }

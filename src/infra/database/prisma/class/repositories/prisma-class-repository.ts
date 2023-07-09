@@ -9,8 +9,8 @@ export class PrismaClassRepositories implements ClassRepository {
 
   async create(
     classModel: Class,
-    teacherId: number,
-    classroomId: number,
+    teacherId: string,
+    classroomId: string,
   ): Promise<Class> {
     const classPrisma = PrismaClassMapper.toPrisma(
       classModel,
@@ -22,7 +22,18 @@ export class PrismaClassRepositories implements ClassRepository {
       data: classPrisma,
       include: {
         teacher: true,
-        classroom: true,
+        classroom: {
+          include: {
+            access: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                openTime: 'asc',
+              },
+            },
+          },
+        },
       },
     });
 
@@ -33,15 +44,52 @@ export class PrismaClassRepositories implements ClassRepository {
     throw new Error('Method not implemented.');
   }
 
-  findById(classId: number): Promise<Class> {
+  findById(classId: string): Promise<Class> {
     throw new Error('Method not implemented.');
   }
 
-  update(classId: number): Promise<void> {
+  update(classId: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  delete(classId: number): Promise<void> {
+  delete(classId: string): Promise<void> {
     throw new Error('Method not implemented.');
+  }
+
+  async listAllClassFromTeacherIdFromToday(
+    teacherId: string,
+    todayDayOfWeek: number,
+  ): Promise<Class[]> {
+    const today = new Date();
+
+    const classes = await this.prismaService.class.findMany({
+      where: {
+        dayOfTheWeek: todayDayOfWeek,
+        teacherId: teacherId,
+        initialDay: {
+          lte: today,
+        },
+        endDay: {
+          gte: today,
+        },
+      },
+      include: {
+        teacher: true,
+        classroom: {
+          include: {
+            access: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                openTime: 'asc',
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return classes.map(PrismaClassMapper.toDomain);
   }
 }

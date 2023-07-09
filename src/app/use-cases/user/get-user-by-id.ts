@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/app/entities/user';
 
 interface GetUserByIdRequest {
-  userId: number;
+  userId: string;
 }
 
 interface GetUserByIdResponse {

@@ -6,7 +6,7 @@ export class UserViewModel {
       id: user.id,
       name: user.name,
       email: user.email,
-      code: user.teacherCode,
+      code: user.code,
       created_at: user.createdAt,
     };
   }

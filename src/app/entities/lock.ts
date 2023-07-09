@@ -1,5 +1,5 @@
 export interface LockProps {
-  id?: number;
+  id?: string;
   name: string;
   state: boolean;
   classroomId?: number;
@@ -14,11 +14,11 @@ export class Lock {
     };
   }
 
-  public get id(): number {
+  public get id(): string {
     return this.props.id;
   }
 
-  public set id(id: number) {
+  public set id(id: string) {
     this.props.id = id;
   }
 

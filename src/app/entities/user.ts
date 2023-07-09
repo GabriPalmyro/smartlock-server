@@ -1,10 +1,10 @@
 export interface UserProps {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
   password: string;
-  teacherCode: string;
-  userTypeId: number;
+  code: string;
+  userTypeId: string;
   createdAt?: Date;
   updateAt?: Date;
 }
@@ -16,11 +16,11 @@ export class User {
     this.props = props;
   }
 
-  get id(): number | undefined {
+  get id(): string | undefined {
     return this.props.id;
   }
 
-  set id(value: number | undefined) {
+  set id(value: string | undefined) {
     this.props.id = value;
   }
 
@@ -48,19 +48,19 @@ export class User {
     this.props.password = value;
   }
 
-  get teacherCode(): string {
-    return this.props.teacherCode;
+  get code(): string {
+    return this.props.code;
   }
 
-  set teacherCode(value: string) {
-    this.props.teacherCode = value;
+  set code(value: string) {
+    this.props.code = value;
   }
 
-  get userTypeId(): number {
+  get userTypeId(): string {
     return this.props.userTypeId;
   }
 
-  set userTypeId(value: number) {
+  set userTypeId(value: string) {
     this.props.userTypeId = value;
   }
 

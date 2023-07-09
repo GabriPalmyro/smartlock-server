@@ -1,4 +1,5 @@
 import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
+import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
 import { ListClassroomsByBlock } from '@app/use-cases/classroom/list-classrooms-by-block';
 import {
   Body,
@@ -19,6 +20,7 @@ export class ClassroomController {
   constructor(
     private createClassroom: CreateClassroom,
     private listClassroomsByBlock: ListClassroomsByBlock,
+    private getClassroomInfoById: GetClassInfos,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
@@ -35,7 +37,7 @@ export class ClassroomController {
 
   @HttpCode(HttpStatus.OK)
   @Get('block/:block')
-  async findUserById(
+  async listClassroomByBlock(
     @Param('block') block: string,
   ): Promise<ClassroomViewModel[]> {
     const { classrooms } = await this.listClassroomsByBlock.execute({
@@ -43,5 +45,17 @@ export class ClassroomController {
     });
 
     return classrooms.map(ClassroomViewModel.toHTTP);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  async classroomInfosById(
+    @Param('id') classroomId: string,
+  ): Promise<ClassroomViewModel> {
+    const { classroomInfos } = await this.getClassroomInfoById.execute({
+      classroomId,
+    });
+
+    return ClassroomViewModel.toHTTPWithInfos(classroomInfos);
   }
 }

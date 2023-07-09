@@ -51,17 +51,17 @@ export class CreateClassBody {
     })
     endTimeClass: Date;
 
-    @IsNumber()
+    @IsString()
     @ApiProperty({
         description: 'ID do professor que vai ministrar a aula',
-        example: 1
+        example: '6716f045-b1d3-4802-aed2-b34323af9f4'
     })
-    teacherId: number | null;
+    teacherId: string | null;
 
-    @IsNumber()
+    @IsString()
     @ApiProperty({
         description: 'ID da sala em que a aula vai ser ministraDA',
-        example: 12
+        example: '6716f045-b1d3-4802-aed2-b34323af9f4'
     })
-    classroomId: number | null;
+    classroomId: string | null;
 }

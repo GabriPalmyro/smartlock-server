@@ -1,5 +1,6 @@
 import { Classroom } from '@app/entities/classroom';
-import { Classroom as RawClassroom } from '@prisma/client';
+import { PrismaAccessMapper } from '../../access/mappers/prisma-access-mapper';
+import { ClassroomWithAccess } from '../types/classroom-with-access';
 
 export class PrismaClassroomMapper {
   static toPrisma(classroom: Classroom) {
@@ -9,11 +10,12 @@ export class PrismaClassroomMapper {
     };
   }
 
-  static toDomain(raw: RawClassroom): Classroom {
+  static toDomain(raw: ClassroomWithAccess): Classroom {
     return new Classroom({
       id: raw.id,
       name: raw.name,
       block: raw.block,
+      access: raw.access.map(PrismaAccessMapper.toDomain),
     });
   }
 }

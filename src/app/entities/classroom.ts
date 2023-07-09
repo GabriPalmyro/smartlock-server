@@ -4,7 +4,7 @@ import { Lock } from './Lock';
 import { TemporaryCode } from './temporary-code';
 
 export interface ClassroomProps {
-  id?: number;
+  id?: string;
   name: string;
   block: string;
   classes?: Class[];
@@ -22,11 +22,11 @@ export class Classroom {
     };
   }
 
-  public get id(): number {
+  public get id(): string {
     return this.props.id;
   }
 
-  public set id(id: number) {
+  public set id(id: string) {
     this.props.id = id;
   }
 
