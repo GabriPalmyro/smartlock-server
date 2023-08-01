@@ -120,7 +120,7 @@ export class PrismaClassRepositories implements ClassRepository {
 
     const classes = await this.prismaService.class.findMany({
       where: {
-        // dayOfTheWeek: todayDayOfWeek,
+        dayOfTheWeek: todayDayOfWeek,
         teacherId: teacherId,
         initialDay: {
           lte: today,
