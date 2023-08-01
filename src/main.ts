@@ -1,4 +1,8 @@
-import { ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  ValidationPipe,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cors from 'cors';
@@ -19,6 +23,13 @@ async function bootstrap() {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
+      exceptionFactory: (errors) => {
+        return new BadRequestException({
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: Object.values(errors[0].constraints).toString(),
+          error: 'Bad Request',
+        });
+      },
     }),
   );
 
