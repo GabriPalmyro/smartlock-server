@@ -72,4 +72,12 @@ export class Access {
   public set classroomId(classroomId: string) {
     this.props.classroomId = classroomId;
   }
+
+  public get userId(): string {
+    return this.props.userId;
+  }
+
+  public set userId(userId: string) {
+    this.props.userId = userId;
+  }
 }

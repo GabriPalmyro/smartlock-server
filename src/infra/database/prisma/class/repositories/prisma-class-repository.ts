@@ -37,23 +37,79 @@ export class PrismaClassRepositories implements ClassRepository {
       },
     });
 
-    return PrismaClassMapper.toDomain(classCreated);
+    return PrismaClassMapper.toDomainWithTeacherAndClassroom(classCreated);
   }
 
-  listAll(): Promise<Class[]> {
-    throw new Error('Method not implemented.');
+  async listAll(): Promise<Class[]> {
+    const classess = await this.prismaService.class.findMany({
+      include: {
+        teacher: true,
+        classroom: {
+          include: {
+            access: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                openTime: 'asc',
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return classess.map(PrismaClassMapper.toDomainWithTeacherAndClassroom);
   }
 
-  findById(classId: string): Promise<Class> {
-    throw new Error('Method not implemented.');
+  async findById(classId: string): Promise<Class> {
+    const classQuery = await this.prismaService.class.findFirst({
+      where: { id: classId },
+      include: {
+        teacher: true,
+        classroom: {
+          include: {
+            access: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                openTime: 'asc',
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return PrismaClassMapper.toDomainWithTeacherAndClassroom(classQuery);
   }
 
-  update(classId: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(
+    classModel: Class,
+    teacherId: string,
+    classroomId: string,
+  ): Promise<void> {
+    const classPrisma = PrismaClassMapper.toPrisma(
+      classModel,
+      teacherId,
+      classroomId,
+    );
+
+    await this.prismaService.class.update({
+      where: {
+        id: classModel.id,
+      },
+      data: classPrisma,
+    });
   }
 
-  delete(classId: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(classId: string): Promise<void> {
+    await this.prismaService.class.delete({
+      where: {
+        id: classId,
+      },
+    });
   }
 
   async listAllClassFromTeacherIdFromToday(
@@ -90,6 +146,6 @@ export class PrismaClassRepositories implements ClassRepository {
       },
     });
 
-    return classes.map(PrismaClassMapper.toDomain);
+    return classes.map(PrismaClassMapper.toDomainWithTeacherAndClassroom);
   }
 }

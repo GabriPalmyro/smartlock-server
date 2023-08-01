@@ -1,17 +1,22 @@
 import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
+import { DeleteClassroom } from '@app/use-cases/classroom/delete-classroom';
 import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
 import { ListClassroomsByBlock } from '@app/use-cases/classroom/list-classrooms-by-block';
+import { UpdateClassroom } from '@app/use-cases/classroom/update-classroom';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateClassroomBody } from '../dtos/create-classroom-body';
+import { UpdateClassroomBody } from '../dtos/update-classroom-body';
 import { ClassroomViewModel } from '../view-models/classroom-view-model';
 
 @ApiTags('classroom')
@@ -19,6 +24,8 @@ import { ClassroomViewModel } from '../view-models/classroom-view-model';
 export class ClassroomController {
   constructor(
     private createClassroom: CreateClassroom,
+    private updateClassroom: UpdateClassroom,
+    private deleteClassroom: DeleteClassroom,
     private listClassroomsByBlock: ListClassroomsByBlock,
     private getClassroomInfoById: GetClassInfos,
   ) {}
@@ -33,6 +40,26 @@ export class ClassroomController {
     });
 
     return ClassroomViewModel.toHTTP(classroom);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Patch()
+  async update(@Body() body: UpdateClassroomBody): Promise<void> {
+    const { id, block, name, lockId } = body;
+    await this.updateClassroom.execute({
+      id,
+      block,
+      name,
+      lockId,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.deleteClassroom.execute({
+      id,
+    });
   }
 
   @HttpCode(HttpStatus.OK)

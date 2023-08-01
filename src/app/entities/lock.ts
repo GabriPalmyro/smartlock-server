@@ -1,8 +1,10 @@
+import { Classroom } from './Classroom';
+
 export interface LockProps {
   id?: string;
   name: string;
   state: boolean;
-  classroomId?: number;
+  classroom?: Classroom;
 }
 
 export class Lock {
@@ -38,11 +40,11 @@ export class Lock {
     this.props.state = state;
   }
 
-  public get classroomId(): number {
-    return this.props.classroomId;
+  public get classroom(): Classroom {
+    return this.props.classroom;
   }
 
-  public set classroomId(classroomId: number) {
-    this.props.classroomId = classroomId;
+  public set classroom(classroom: Classroom) {
+    this.props.classroom = classroom;
   }
 }

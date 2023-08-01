@@ -1,5 +1,5 @@
+import { Classroom } from '@app/entities/Classroom';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
-import { ClassroomWithLockAccessClass } from '@infra/database/prisma/classroom/types/classroom-with-lock-access-class';
 import { Injectable } from '@nestjs/common';
 
 interface GetClassInfosRequest {
@@ -7,7 +7,7 @@ interface GetClassInfosRequest {
 }
 
 interface GetClassInfosResponse {
-  classroomInfos: ClassroomWithLockAccessClass;
+  classroomInfos: Classroom;
 }
 
 @Injectable()

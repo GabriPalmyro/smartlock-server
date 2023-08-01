@@ -1,6 +1,8 @@
 import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
+import { DeleteClassroom } from '@app/use-cases/classroom/delete-classroom';
 import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
 import { ListClassroomsByBlock } from '@app/use-cases/classroom/list-classrooms-by-block';
+import { UpdateClassroom } from '@app/use-cases/classroom/update-classroom';
 import { DatabaseModule } from '@infra/database/database.module';
 import { Module } from '@nestjs/common';
 import { ClassroomController } from './controllers/classroom.controller';
@@ -8,6 +10,12 @@ import { ClassroomController } from './controllers/classroom.controller';
 @Module({
   imports: [DatabaseModule],
   controllers: [ClassroomController],
-  providers: [CreateClassroom, ListClassroomsByBlock, GetClassInfos],
+  providers: [
+    CreateClassroom,
+    UpdateClassroom,
+    ListClassroomsByBlock,
+    GetClassInfos,
+    DeleteClassroom,
+  ],
 })
 export class ClassroomModule {}

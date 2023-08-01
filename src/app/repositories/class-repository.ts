@@ -11,7 +11,11 @@ export abstract class ClassRepository {
 
   abstract findById(classId: string): Promise<Class> | null;
 
-  abstract update(classId: string): Promise<void>;
+  abstract update(
+    classModel: Class,
+    teacherId: string,
+    classroomId: string,
+  ): Promise<void>;
 
   abstract delete(classId: string): Promise<void>;
 

@@ -3,10 +3,24 @@ import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { PrismaClassroomMapper } from '../mappers/prisma-classroom-mapper';
-import { ClassroomWithLockAccessClass } from '../types/classroom-with-lock-access-class';
 @Injectable()
 export class PrismaClassroomRepositories implements ClassroomRepository {
   constructor(private prismaService: PrismaService) {}
+
+  async updateLockState(classroomId: string, state: boolean): Promise<void> {
+    await this.prismaService.classroom.update({
+      where: {
+        id: classroomId,
+      },
+      data: {
+        lock: {
+          update: {
+            state: state,
+          },
+        },
+      },
+    });
+  }
 
   async listByBlock(block: string): Promise<Classroom[]> {
     const classrooms = await this.prismaService.classroom.findMany({
@@ -47,7 +61,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
     throw new Error('Method not implemented.');
   }
 
-  async findById(classroomId: string): Promise<ClassroomWithLockAccessClass> {
+  async findById(classroomId: string): Promise<Classroom> {
     const classroom = await this.prismaService.classroom.findFirst({
       where: {
         id: classroomId,
@@ -74,7 +88,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
       },
     });
 
-    return classroom;
+    return PrismaClassroomMapper.toDomainWithAccessAndClass(classroom);
   }
 
   async findByBlockAndName(block: string, name: string): Promise<Classroom> {
@@ -100,11 +114,29 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
     return PrismaClassroomMapper.toDomain(classroom);
   }
 
-  update(classroomId: string, block: string, name: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(
+    id: string,
+    block: string,
+    name: string,
+    lockId: string | null,
+  ): Promise<void> {
+    await this.prismaService.classroom.update({
+      where: {
+        id: id,
+      },
+      data: {
+        block: block,
+        name: name,
+        lock: {
+          connect: {
+            id: lockId,
+          },
+        },
+      },
+    });
   }
 
-  delete(classroomId: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(classroomId: string): Promise<void> {
+    await this.prismaService.classroom.delete({ where: { id: classroomId } });
   }
 }
