@@ -25,6 +25,7 @@ export class PrismaAccessRepositories implements AccessRepository {
     const access = await this.prismaService.access.findMany({
       include: {
         classroom: true,
+        user: true,
       },
     });
 
@@ -38,6 +39,7 @@ export class PrismaAccessRepositories implements AccessRepository {
       },
       include: {
         classroom: true,
+        user: true,
       },
     });
 

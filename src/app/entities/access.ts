@@ -1,6 +1,8 @@
+import { User } from './User';
+
 export interface AccessProps {
   id?: string;
-  userId: string;
+  user: User;
   code?: string;
   accessType: string;
   openTime: Date;
@@ -25,12 +27,12 @@ export class Access {
     this.props.id = id;
   }
 
-  public get user(): string {
-    return this.props.userId;
+  public get user(): User {
+    return this.props.user;
   }
 
-  public set user(user: string) {
-    this.props.userId = user;
+  public set user(user: User) {
+    this.props.user = user;
   }
 
   public get code(): string {
@@ -71,13 +73,5 @@ export class Access {
 
   public set classroomId(classroomId: string) {
     this.props.classroomId = classroomId;
-  }
-
-  public get userId(): string {
-    return this.props.userId;
-  }
-
-  public set userId(userId: string) {
-    this.props.userId = userId;
   }
 }

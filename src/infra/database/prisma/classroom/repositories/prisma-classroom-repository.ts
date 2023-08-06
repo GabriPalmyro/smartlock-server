@@ -79,6 +79,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
         lock: true,
         access: {
           include: {
+            classroom: true,
             user: true,
           },
           orderBy: {

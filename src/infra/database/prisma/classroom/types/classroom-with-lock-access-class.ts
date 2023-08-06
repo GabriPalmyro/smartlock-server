@@ -12,6 +12,7 @@ export type ClassroomWithLockAccessClass = Prisma.ClassroomGetPayload<{
     lock: true;
     access: {
       include: {
+        classroom: true;
         user: true;
       };
       orderBy: {

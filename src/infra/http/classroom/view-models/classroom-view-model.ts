@@ -1,5 +1,6 @@
 import { Classroom } from '@app/entities/classroom';
 import { LockViewModel } from '@infra/http/lock/view-models/lock-view-model';
+import { UserViewModel } from '@infra/http/user/view-models/user-view-model';
 
 export class ClassroomViewModel {
   static toHTTP(classroom: Classroom) {
@@ -32,7 +33,7 @@ export class ClassroomViewModel {
           ? classroom.access.map((value) => {
               return {
                 id: value.id,
-                user: value.user,
+                user: UserViewModel.toHTTP(value.user),
                 access_type: value.accessType,
                 open_time: value.openTime,
                 close_time: value.closeTime,
@@ -45,6 +46,7 @@ export class ClassroomViewModel {
               return {
                 id: value.id,
                 name: value.subject,
+                dayOfTheWeek: value.dayOfTheWeek,
                 initialTime: value.initialTimeClass,
                 endTime: value.endTimeClass,
               };

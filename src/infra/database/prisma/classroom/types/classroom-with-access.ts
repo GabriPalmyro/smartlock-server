@@ -4,6 +4,7 @@ export type ClassroomWithAccess = Prisma.ClassroomGetPayload<{
   include: {
     access: {
       include: {
+        classroom: true;
         user: true;
       };
       orderBy: {

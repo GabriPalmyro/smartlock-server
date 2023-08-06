@@ -42,7 +42,7 @@ export class OpenClassroomLock {
     const access = new Access({
       accessType: 'App',
       openTime: today,
-      userId: userId,
+      user: user,
       classroomId: classroomId,
       closeTime: null,
       code: null,
