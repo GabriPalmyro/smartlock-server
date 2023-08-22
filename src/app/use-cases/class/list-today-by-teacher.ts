@@ -21,7 +21,7 @@ export class ListClassFromTodayByTeacher {
     const { teacherId } = request;
 
     const today = new Date();
-    const dayOfWeek = getDay(today); // Obtém o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
+    const dayOfWeek = getDay(today) - 1; // Obtém o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
 
     const classes =
       await this.classRepository.listAllClassFromTeacherIdFromToday(

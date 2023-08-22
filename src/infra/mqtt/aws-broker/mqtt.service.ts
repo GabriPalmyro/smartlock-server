@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import * as mqtt from 'mqtt';
+import { LockConnectionError } from 'src/core/errors/open-lock-error';
 
 @Injectable()
 export class MqttService {
@@ -31,12 +32,22 @@ export class MqttService {
     });
   }
 
-  openLock(lockId: string): void {
-    this.client.publish('open', lockId, (err) => {
-      if (err) {
-        console.error(`Error publishing to MQTT topic 'open': ${err}`);
-      }
-    });
+  async openLock(lockId: string): Promise<void> {
+    try {
+      this.client.publish('open', lockId, (err) => {
+        if (err) {
+          console.error(`Error publishing to MQTT topic 'open': ${err}`);
+          throw new LockConnectionError(
+            'Ocorreu um problema ao conectar a fechadura',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      });
+    } catch (error) {
+      console.error('Erro capturado ao publicar no tópico MQTT:', error);
+      // Aqui, você pode optar por relançar o erro ou lidar com ele de alguma outra maneira
+      throw error;
+    }
   }
 
   connected(): boolean {

@@ -1,8 +1,10 @@
 import { User } from '@app/entities/user';
+import { UserType } from '@app/entities/user-type';
 import { UserRepository } from '@app/repositories/user-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
+import { PrismaUserTypeMapper } from '../mappers/prisma-user-type-mapper';
 @Injectable()
 export class PrismaUserRepositories implements UserRepository {
   constructor(private prismaService: PrismaService) {}
@@ -23,6 +25,23 @@ export class PrismaUserRepositories implements UserRepository {
   async listAll(): Promise<User[]> {
     const users = await this.prismaService.user.findMany();
     return users.map(PrismaUserMapper.toDomain);
+  }
+
+  async findUserTypeById(typeId: string): Promise<UserType> {
+    const user = await this.prismaService.userType
+      .findUniqueOrThrow({
+        where: {
+          id: typeId,
+        },
+      })
+      .catch(() => {
+        throw new HttpException(
+          'Não foi possível encontrar um tipo',
+          HttpStatus.NOT_FOUND,
+        );
+      });
+
+    return PrismaUserTypeMapper.toDomain(user);
   }
 
   async findById(userId: string): Promise<User> {

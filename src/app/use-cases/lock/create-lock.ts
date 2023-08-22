@@ -1,3 +1,4 @@
+import { Classroom } from '@app/entities/Classroom';
 import { Lock } from '@app/entities/Lock';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';
@@ -21,14 +22,21 @@ export class CreateLock {
 
   async execute(request: CreateLockRequest): Promise<CreateLockResponse> {
     const { name, classroomId } = request;
+    let classroom: Classroom;
 
-    const classroom = await this.classroomRepository.findById(classroomId);
+    try {
+      if (classroomId != null) {
+        classroom = await this.classroomRepository.findById(classroomId);
 
-    if (classroom.lock != null) {
-      throw new HttpException(
-        'Essa sala já possui uma fechadura atribuída',
-        HttpStatus.BAD_REQUEST,
-      );
+        if (classroom.lock != null) {
+          throw new HttpException(
+            'Essa sala já possui uma fechadura atribuída',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
+    } catch (error) {
+      throw new HttpException('Essa sala não existe', HttpStatus.BAD_REQUEST);
     }
 
     const lockModel = new Lock({

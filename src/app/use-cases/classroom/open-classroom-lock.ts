@@ -4,7 +4,8 @@ import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';
 import { UserRepository } from '@app/repositories/user-repository';
 import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { LockConnectionError } from 'src/core/errors/open-lock-error';
 
 interface OpenClassroomLockRequest {
   userId: string;
@@ -25,29 +26,46 @@ export class OpenClassroomLock {
     const { userId, classroomId } = request;
 
     const user = await this.userRepository.findById(userId);
+    const type = await this.userRepository.findUserTypeById(user.userTypeId);
     const classroom = await this.classroomRepository.findById(classroomId);
 
     // VERIFICAR SE É DOSCENTE OU MASTER
-    // if(user.userTypeId == )
+    if (type.type == 'Discente') {
+      throw new HttpException(
+        'Você não possui autorização para fazer essa ação.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
     const lock = classroom.lock;
 
-    this.mqttService.openLock(lock.id);
-    lock.state = true;
+    try {
+      await this.mqttService.openLock(lock.id);
+      lock.state = true;
 
-    await this.lockRepository.updateState(lock.id, true);
+      await this.lockRepository.updateState(lock.id, true);
 
-    const today = new Date();
+      const today = new Date();
 
-    const access = new Access({
-      accessType: 'App',
-      openTime: today,
-      user: user,
-      classroomId: classroomId,
-      closeTime: null,
-      code: null,
-    });
+      const access = new Access({
+        accessType: 'App',
+        openTime: today,
+        user: user,
+        classroomId: classroomId,
+        closeTime: null,
+        code: null,
+      });
 
-    await this.accessRepository.create(access);
+      await this.accessRepository.create(access);
+    } catch (error) {
+      if (error instanceof LockConnectionError) {
+        throw error;
+      }
+      // Relança outros erros que não sejam de conexão com a fechadura
+      throw new HttpException(
+        error.toString(),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

@@ -2,6 +2,7 @@ import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
 import { DeleteClassroom } from '@app/use-cases/classroom/delete-classroom';
 import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
 import { ListClassroomsByBlock } from '@app/use-cases/classroom/list-classrooms-by-block';
+import { OpenClassroomLock } from '@app/use-cases/classroom/open-classroom-lock';
 import { UpdateClassroom } from '@app/use-cases/classroom/update-classroom';
 import {
   Body,
@@ -28,6 +29,7 @@ export class ClassroomController {
     private deleteClassroom: DeleteClassroom,
     private listClassroomsByBlock: ListClassroomsByBlock,
     private getClassroomInfoById: GetClassInfos,
+    private openClassroomLock: OpenClassroomLock,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
@@ -84,5 +86,17 @@ export class ClassroomController {
     });
 
     return ClassroomViewModel.toHTTPWithInfos(classroomInfos);
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post(':userId/open/:classroomId')
+  async openClassroom(
+    @Param('classroomId') classroomId: string,
+    @Param('userId') userId: string,
+  ): Promise<void> {
+    await this.openClassroomLock.execute({
+      classroomId,
+      userId,
+    });
   }
 }
