@@ -8,6 +8,17 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cors from 'cors';
 import { AppModule } from './app.module';
 
+// Registro de caminhos do TypeScript
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const tsConfigPaths = require('tsconfig-paths');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const paths = require('../tsconfig.json').compilerOptions.paths;
+
+tsConfigPaths.register({
+  baseUrl: './',
+  paths: paths,
+});
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
