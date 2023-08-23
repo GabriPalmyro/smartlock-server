@@ -1,3 +1,4 @@
+import { CloseClassroomLock } from '@app/use-cases/classroom/close-classroom-lock';
 import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
 import { DeleteClassroom } from '@app/use-cases/classroom/delete-classroom';
 import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
@@ -19,6 +20,7 @@ import { ClassroomController } from './controllers/classroom.controller';
     GetClassInfos,
     DeleteClassroom,
     OpenClassroomLock,
+    CloseClassroomLock,
   ],
 })
 export class ClassroomModule {}

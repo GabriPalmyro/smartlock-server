@@ -44,12 +44,16 @@ export class OpenClassroomLock {
       lock.state = true;
 
       await this.lockRepository.updateState(lock.id, true);
+      // Configurando o fuso horário para Brasília (BRT - Brasília Time)
+      const brazilTimeZone = 'America/Sao_Paulo';
+      const options = { timeZone: brazilTimeZone };
 
-      const today = new Date();
+      const currentUTC = new Date();
+      const brazilTime = new Date(currentUTC.toLocaleString('en-US', options));
 
       const access = new Access({
         accessType: 'App',
-        openTime: today,
+        openTime: brazilTime,
         user: user,
         classroomId: classroomId,
         closeTime: null,

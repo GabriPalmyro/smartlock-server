@@ -7,6 +7,8 @@ export abstract class AccessRepository {
 
   abstract findById(accessId: string): Promise<Access> | null;
 
+  abstract findLastClassroomAccess(classroomId: string): Promise<Access> | null;
+
   abstract update(access: Access): Promise<void>;
 
   abstract delete(accessId: string): Promise<void>;

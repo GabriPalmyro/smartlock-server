@@ -1,3 +1,4 @@
+import { CloseClassroomLock } from '@app/use-cases/classroom/close-classroom-lock';
 import { CreateClassroom } from '@app/use-cases/classroom/create-classroom';
 import { DeleteClassroom } from '@app/use-cases/classroom/delete-classroom';
 import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
@@ -31,6 +32,7 @@ export class ClassroomController {
     private listClassroomsByBlock: ListClassroomsByBlock,
     private getClassroomInfoById: GetClassInfos,
     private openClassroomLock: OpenClassroomLock,
+    private closeClassroomLock: CloseClassroomLock,
     private mqttService: MqttService,
   ) {}
 
@@ -99,6 +101,16 @@ export class ClassroomController {
     await this.openClassroomLock.execute({
       classroomId,
       userId,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('/close/:classroomId')
+  async closeClassroom(
+    @Param('classroomId') classroomId: string,
+  ): Promise<void> {
+    await this.closeClassroomLock.execute({
+      classroomId,
     });
   }
 }

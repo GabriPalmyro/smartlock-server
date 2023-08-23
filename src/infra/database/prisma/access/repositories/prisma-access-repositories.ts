@@ -7,6 +7,23 @@ import { PrismaAccessMapper } from '../mappers/prisma-access-mapper';
 @Injectable()
 export class PrismaAccessRepositories implements AccessRepository {
   constructor(private prismaService: PrismaService) {}
+  async findLastClassroomAccess(classroomId: string): Promise<Access> {
+    const access = await this.prismaService.access.findFirst({
+      where: {
+        classroomId: classroomId,
+        closeTime: null,
+      },
+      orderBy: {
+        openTime: 'desc',
+      },
+      include: {
+        classroom: true,
+        user: true,
+      },
+    });
+
+    return PrismaAccessMapper.toDomain(access);
+  }
 
   async create(access: Access): Promise<string> {
     const accessPrisma = PrismaAccessMapper.toPrisma(access);
