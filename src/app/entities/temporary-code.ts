@@ -1,6 +1,6 @@
-import { Access } from './Access';
-import { Classroom } from './Classroom';
-import { User } from './User';
+import { Access } from './access';
+import { Classroom } from './classroom';
+import { User } from './user';
 
 export interface TemporaryCodeProps {
   id?: string;

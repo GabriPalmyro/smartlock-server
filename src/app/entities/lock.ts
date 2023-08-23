@@ -1,4 +1,4 @@
-import { Classroom } from './Classroom';
+import { Classroom } from './classroom';
 
 export interface LockProps {
   id?: string;

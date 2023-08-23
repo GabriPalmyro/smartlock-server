@@ -1,5 +1,5 @@
-import { Classroom } from './Classroom';
-import { User } from './User';
+import { Classroom } from './classroom';
+import { User } from './user';
 
 export interface ClassProps {
   id?: string;

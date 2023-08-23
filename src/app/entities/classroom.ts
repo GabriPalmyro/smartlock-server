@@ -1,6 +1,6 @@
-import { Access } from './Access';
-import { Class } from './Class';
-import { Lock } from './Lock';
+import { Access } from './access';
+import { Class } from './class';
+import { Lock } from './lock';
 import { TemporaryCode } from './temporary-code';
 
 export interface ClassroomProps {
