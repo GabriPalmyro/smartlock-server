@@ -1,4 +1,4 @@
-import { Classroom } from '@app/entities/Classroom';
+import { Classroom } from '@app/entities/classroom';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { Injectable } from '@nestjs/common';
 

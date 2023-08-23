@@ -1,4 +1,4 @@
-import { Lock } from '@app/entities/Lock';
+import { Lock } from '@app/entities/lock';
 import { ClassroomViewModel } from '@infra/http/classroom/view-models/classroom-view-model';
 
 export class LockViewModel {

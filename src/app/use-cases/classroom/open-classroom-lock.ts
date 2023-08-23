@@ -1,4 +1,4 @@
-import { Access } from '@app/entities/Access';
+import { Access } from '@app/entities/access';
 import { AccessRepository } from '@app/repositories/access_repository';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';

@@ -1,4 +1,4 @@
-import { Access } from '@app/entities/Access';
+import { Access } from '@app/entities/access';
 import { AccessRepository } from '@app/repositories/access_repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';

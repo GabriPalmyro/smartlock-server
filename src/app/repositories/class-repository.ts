@@ -1,4 +1,4 @@
-import { Class } from '@app/entities/Class';
+import { Class } from '@app/entities/class';
 
 export abstract class ClassRepository {
   abstract create(

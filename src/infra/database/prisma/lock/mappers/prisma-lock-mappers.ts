@@ -1,4 +1,4 @@
-import { Lock } from '@app/entities/Lock';
+import { Lock } from '@app/entities/lock';
 import { Lock as RawLock } from '@prisma/client';
 import { PrismaClassroomMapper } from '../../classroom/mappers/prisma-classroom-mapper';
 import { LockWithClassroom } from '../types/lock-with-classroom';

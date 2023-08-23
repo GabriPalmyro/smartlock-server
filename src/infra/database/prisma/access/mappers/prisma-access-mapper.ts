@@ -1,4 +1,4 @@
-import { Access } from '@app/entities/Access';
+import { Access } from '@app/entities/access';
 import { PrismaUserMapper } from '../../user/mappers/prisma-user-mapper';
 import { AccessWithUser } from '../types/access-with-user-type';
 

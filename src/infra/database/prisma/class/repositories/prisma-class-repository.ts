@@ -1,4 +1,4 @@
-import { Class } from '@app/entities/Class';
+import { Class } from '@app/entities/class';
 import { ClassRepository } from '@app/repositories/class-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';

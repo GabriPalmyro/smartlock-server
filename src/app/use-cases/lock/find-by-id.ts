@@ -1,4 +1,4 @@
-import { Lock } from '@app/entities/Lock';
+import { Lock } from '@app/entities/lock';
 import { LockRepository } from '@app/repositories/lock-repository';
 import { Injectable } from '@nestjs/common';
 

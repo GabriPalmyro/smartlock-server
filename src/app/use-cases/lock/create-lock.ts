@@ -1,5 +1,5 @@
-import { Classroom } from '@app/entities/Classroom';
-import { Lock } from '@app/entities/Lock';
+import { Classroom } from '@app/entities/classroom';
+import { Lock } from '@app/entities/lock';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
