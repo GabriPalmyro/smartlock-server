@@ -23,7 +23,7 @@
     "pm2:start:app": "pm2 start app.json",
     "pm2:stop:app": "pm2 stop app.json",
     "pm2:destroy:app": "pm2 delete app.json",
-    "heroku-postbuild": "NODE_ENV=dev ts-node -r tsconfig-paths/register ./node_modules/.bin/nest build"
+    "heroku-postbuild": "NODE_ENV=dev npm install --omit --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.327.0",
