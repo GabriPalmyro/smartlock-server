@@ -7,21 +7,25 @@ export class MqttService {
   private client: mqtt.Client;
 
   constructor() {
-    // this.client = mqtt.connect(
-    //   'mqtt://ec2-18-228-3-56.sa-east-1.compute.amazonaws.com',
-    //   {
-    //     port: 1883,
-    //   },
-    // );
-    // this.client.on('error', function (error) {
-    //   console.log('MQTT client error:', error);
-    // });
-    // this.client.on('offline', function () {
-    //   console.log('MQTT client offline');
-    // });
-    // this.client.on('close', function () {
-    //   console.log('MQTT client connection closed');
-    // });
+    this.client = mqtt.connect(
+      'mqtt://ec2-52-67-169-181.sa-east-1.compute.amazonaws.com',
+      {
+        port: 1883,
+      },
+    );
+
+    this.client.on('connect', () => {
+      console.log('Conectado ao broker MQTT');
+    });
+    this.client.on('error', function (error) {
+      console.log('MQTT client error:', error);
+    });
+    this.client.on('offline', function () {
+      console.log('MQTT client offline');
+    });
+    this.client.on('close', function () {
+      console.log('MQTT client connection closed');
+    });
   }
 
   publish(topic: string, message: string): void {

@@ -30,7 +30,7 @@ export class OpenClassroomLock {
     const classroom = await this.classroomRepository.findById(classroomId);
 
     // VERIFICAR SE É DOSCENTE OU MASTER
-    if (type.type == 'Discente') {
+    if (type.type.toLowerCase() == 'discente') {
       throw new HttpException(
         'Você não possui autorização para fazer essa ação.',
         HttpStatus.UNAUTHORIZED,

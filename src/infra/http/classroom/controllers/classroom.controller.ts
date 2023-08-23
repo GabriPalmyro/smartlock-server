@@ -4,6 +4,7 @@ import { GetClassInfos } from '@app/use-cases/classroom/get-class-infos';
 import { ListClassroomsByBlock } from '@app/use-cases/classroom/list-classrooms-by-block';
 import { OpenClassroomLock } from '@app/use-cases/classroom/open-classroom-lock';
 import { UpdateClassroom } from '@app/use-cases/classroom/update-classroom';
+import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
 import {
   Body,
   Controller,
@@ -30,6 +31,7 @@ export class ClassroomController {
     private listClassroomsByBlock: ListClassroomsByBlock,
     private getClassroomInfoById: GetClassInfos,
     private openClassroomLock: OpenClassroomLock,
+    private mqttService: MqttService,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
