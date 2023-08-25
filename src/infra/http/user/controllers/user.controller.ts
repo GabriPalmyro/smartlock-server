@@ -1,7 +1,9 @@
 import { CreateUser } from '@app/use-cases/user/create-user';
 import { GetUserById } from '@app/use-cases/user/get-user-by-id';
+import { ListAllTeachers } from '@app/use-cases/user/list-all-teachers';
 import { ListAllUsers } from '@app/use-cases/user/list-all-users';
 import { LoginWithCodeAndPassword } from '@app/use-cases/user/login-user-code-password';
+import { UpdateUser } from '@app/use-cases/user/update-user';
 import {
   Body,
   Controller,
@@ -9,11 +11,13 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserBody } from '../dtos/create-user-body';
 import { LoginUserBody } from '../dtos/login-user-body';
+import { UpdateUserBody } from '../dtos/update-user-body';
 import { UserViewModel } from '../view-models/user-view-model';
 
 @ApiTags('user')
@@ -22,8 +26,10 @@ export class UserController {
   constructor(
     private createUser: CreateUser,
     private getUserById: GetUserById,
+    private updateUserUseCase: UpdateUser,
     private loginWithCodeAndPassword: LoginWithCodeAndPassword,
     private listAllUsers: ListAllUsers,
+    private listAllTeachers: ListAllTeachers,
   ) {}
 
   @Post()
@@ -87,9 +93,41 @@ export class UserController {
     return UserViewModel.toHTTP(user);
   }
 
+  @Patch()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    description: 'Editar informações de um usuário',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário Editado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Usuário não encontrado',
+  })
+  async update(@Body() body: UpdateUserBody): Promise<void> {
+    const { code, email, name, userId, userTypeId } = body;
+
+    await this.updateUserUseCase.execute({
+      userId,
+      email,
+      name,
+      code,
+      userTypeId,
+    });
+  }
+
   @Get('all')
   async listAll(): Promise<UserViewModel[]> {
     const { users } = await this.listAllUsers.execute();
+
+    return users.map(UserViewModel.toHTTP);
+  }
+
+  @Get('all/teachers')
+  async listTeachers(): Promise<UserViewModel[]> {
+    const { users } = await this.listAllTeachers.execute();
 
     return users.map(UserViewModel.toHTTP);
   }

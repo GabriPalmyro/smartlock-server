@@ -27,6 +27,17 @@ export class PrismaUserRepositories implements UserRepository {
     return users.map(PrismaUserMapper.toDomain);
   }
 
+  async listAllTeachers(): Promise<User[]> {
+    const users = await this.prismaService.user.findMany({
+      where: {
+        userType: {
+          type: 'Doscente',
+        },
+      },
+    });
+    return users.map(PrismaUserMapper.toDomain);
+  }
+
   async findUserTypeById(typeId: string): Promise<UserType> {
     const user = await this.prismaService.userType
       .findUniqueOrThrow({
@@ -88,8 +99,24 @@ export class PrismaUserRepositories implements UserRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
-  update(userId: string, name: string, nickname: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(
+    userId: string,
+    name: string,
+    email: string,
+    code: string,
+    userTypeId: string,
+  ): Promise<void> {
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name,
+        email,
+        code,
+        userTypeId,
+      },
+    });
   }
 
   async delete(userId: string): Promise<void> {

@@ -7,8 +7,11 @@ export class MqttService {
   private client: mqtt.Client;
 
   constructor() {
+    let isErrorConnected = false;
+
     this.client = mqtt.connect(
-      'mqtt://ec2-52-67-169-181.sa-east-1.compute.amazonaws.com',
+      // 'mqtt://ec2-52-67-169-181.sa-east-1.compute.amazonaws.com',
+      'mqtt://broker.hivemq.com',
       {
         port: 1883,
       },
@@ -17,15 +20,21 @@ export class MqttService {
     this.client.on('connect', () => {
       console.log('Conectado ao broker MQTT');
     });
-    this.client.on('error', function (error) {
-      console.log('MQTT client error:', error);
-    });
-    this.client.on('offline', function () {
-      console.log('MQTT client offline');
-    });
-    this.client.on('close', function () {
-      console.log('MQTT client connection closed');
-    });
+
+    if (!isErrorConnected) {
+      this.client.on('error', function (error) {
+        console.log('MQTT client error:', error);
+        isErrorConnected = true;
+      });
+      this.client.on('offline', function () {
+        console.log('MQTT client offline');
+        isErrorConnected = true;
+      });
+      this.client.on('close', function () {
+        console.log('MQTT client connection closed');
+        isErrorConnected = true;
+      });
+    }
   }
 
   publish(topic: string, message: string): void {
