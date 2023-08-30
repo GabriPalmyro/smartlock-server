@@ -15,7 +15,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
       data: {
         lock: {
           update: {
-            state: state,
+            isClosed: state,
           },
         },
       },

@@ -17,7 +17,7 @@ export class PrismaLockMapper {
     return new Lock({
       id: raw.id,
       name: raw.name,
-      state: raw.state,
+      state: raw.isClosed,
     });
   }
 
@@ -25,7 +25,7 @@ export class PrismaLockMapper {
     return new Lock({
       id: raw.id,
       name: raw.name,
-      state: raw.state,
+      state: raw.isClosed,
       classroom: PrismaClassroomMapper.toDomain(raw.classroom),
     });
   }

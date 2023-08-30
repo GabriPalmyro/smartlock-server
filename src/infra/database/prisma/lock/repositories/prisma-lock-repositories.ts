@@ -52,7 +52,7 @@ export class PrismaLockRepositories implements LockRepository {
       data: {
         classroomId: classroomId,
         name: lock.name,
-        state: lock.state,
+        isClosed: lock.state,
       },
     });
   }
@@ -63,7 +63,7 @@ export class PrismaLockRepositories implements LockRepository {
         id: lockId,
       },
       data: {
-        state: state,
+        isClosed: state,
       },
     });
   }
