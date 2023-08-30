@@ -83,7 +83,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
             user: true,
           },
           orderBy: {
-            openTime: 'asc',
+            openTime: 'desc',
           },
         },
       },

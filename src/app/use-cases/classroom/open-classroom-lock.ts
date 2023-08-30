@@ -5,6 +5,7 @@ import { LockRepository } from '@app/repositories/lock-repository';
 import { UserRepository } from '@app/repositories/user-repository';
 import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { DateTime } from 'luxon';
 import { LockConnectionError } from 'src/core/errors/open-lock-error';
 
 interface OpenClassroomLockRequest {
@@ -44,16 +45,17 @@ export class OpenClassroomLock {
       lock.state = false;
 
       await this.lockRepository.updateState(lock.id, lock.state);
-      // Configurando o fuso horário para Brasília (BRT - Brasília Time)
-      const brazilTimeZone = 'America/Sao_Paulo';
-      const options = { timeZone: brazilTimeZone };
 
-      const currentUTC = new Date();
-      const brazilTime = new Date(currentUTC.toLocaleString('en-US', options));
+      const currentUTC = DateTime.utc(); // Obtém a hora atual em UTC
+      const brasiliaTime = currentUTC.setZone('America/Sao_Paulo'); // Converte para o horário de Brasília
+
+      const dateObject: Date = brasiliaTime.toJSDate(); // Convertendo para um objeto Date do JS
+
+      console.log(`brazilian date ${brasiliaTime.toJSDate()}`); // O horário de Brasília como um objeto Date
 
       const access = new Access({
         accessType: 'App',
-        openTime: brazilTime,
+        openTime: dateObject,
         user: user,
         classroomId: classroomId,
         closeTime: null,

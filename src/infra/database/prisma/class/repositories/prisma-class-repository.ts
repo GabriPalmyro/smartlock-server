@@ -1,6 +1,7 @@
 import { Class } from '@app/entities/class';
 import { ClassRepository } from '@app/repositories/class-repository';
 import { Injectable } from '@nestjs/common';
+import { DateTime } from 'luxon';
 import { PrismaService } from '../../prisma.service';
 import { PrismaClassMapper } from '../mappers/prisma-class-mapper';
 @Injectable()
@@ -116,7 +117,9 @@ export class PrismaClassRepositories implements ClassRepository {
     teacherId: string,
     todayDayOfWeek: number,
   ): Promise<Class[]> {
-    const today = new Date();
+    const currentUTC = DateTime.utc();
+    const brasiliaTime = currentUTC.setZone('America/Sao_Paulo');
+    const today: Date = brasiliaTime.toJSDate();
 
     const classes = await this.prismaService.class.findMany({
       where: {

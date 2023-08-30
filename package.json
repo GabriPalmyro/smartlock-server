@@ -37,6 +37,8 @@
     "crypto": "^1.0.1",
     "date-fns": "^2.30.0",
     "handlebars": "^4.7.7",
+    "luxon": "^3.4.2",
+    "moment-timezone": "^0.5.43",
     "mqtt": "^4.3.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.1",
