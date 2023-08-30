@@ -1,8 +1,8 @@
 import { AccessRepository } from '@app/repositories/access_repository';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';
+import { getBrasiliaTime } from '@helpers/date';
 import { Injectable } from '@nestjs/common';
-import { DateTime } from 'luxon';
 
 interface CloseClassroomLockRequest {
   classroomId: string;
@@ -23,14 +23,7 @@ export class CloseClassroomLock {
       classroomId,
     );
 
-    const currentUTC = DateTime.utc(); // Obtém a hora atual em UTC
-    const brasiliaTime = currentUTC.setZone('America/Sao_Paulo'); // Converte para o horário de Brasília
-
-    const dateObject: Date = brasiliaTime.toJSDate(); // Convertendo para um objeto Date do JS
-
-    console.log(`brazilian date ${brasiliaTime.toJSDate()}`); // O horário de Brasília como um objeto Date
-
-    access.closeTime = dateObject;
+    access.closeTime = getBrasiliaTime();
 
     await this.accessRepository.update(access);
 

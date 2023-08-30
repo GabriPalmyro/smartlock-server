@@ -36,6 +36,7 @@
     "class-validator": "^0.14.0",
     "crypto": "^1.0.1",
     "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "handlebars": "^4.7.7",
     "luxon": "^3.4.2",
     "moment-timezone": "^0.5.43",

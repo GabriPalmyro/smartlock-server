@@ -3,9 +3,9 @@ import { AccessRepository } from '@app/repositories/access_repository';
 import { ClassroomRepository } from '@app/repositories/classroom-repository';
 import { LockRepository } from '@app/repositories/lock-repository';
 import { UserRepository } from '@app/repositories/user-repository';
+import { getBrasiliaTime } from '@helpers/date';
 import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DateTime } from 'luxon';
 import { LockConnectionError } from 'src/core/errors/open-lock-error';
 
 interface OpenClassroomLockRequest {
@@ -41,21 +41,9 @@ export class OpenClassroomLock {
     const lock = classroom.lock;
 
     try {
-      await this.mqttService.openLock(lock.id);
-      lock.state = false;
-
-      await this.lockRepository.updateState(lock.id, lock.state);
-
-      const currentUTC = DateTime.utc(); // Obtém a hora atual em UTC
-      const brasiliaTime = currentUTC.setZone('America/Sao_Paulo'); // Converte para o horário de Brasília
-
-      const dateObject: Date = brasiliaTime.toJSDate(); // Convertendo para um objeto Date do JS
-
-      console.log(`brazilian date ${brasiliaTime.toJSDate()}`); // O horário de Brasília como um objeto Date
-
       const access = new Access({
         accessType: 'App',
-        openTime: dateObject,
+        openTime: getBrasiliaTime(),
         user: user,
         classroomId: classroomId,
         closeTime: null,
@@ -63,6 +51,11 @@ export class OpenClassroomLock {
       });
 
       await this.accessRepository.create(access);
+
+      await this.mqttService.openLock(lock.id);
+      lock.state = false;
+
+      await this.lockRepository.updateState(lock.id, lock.state);
     } catch (error) {
       if (error instanceof LockConnectionError) {
         throw error;

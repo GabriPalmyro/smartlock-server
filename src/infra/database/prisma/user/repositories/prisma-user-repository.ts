@@ -1,6 +1,7 @@
 import { User } from '@app/entities/user';
 import { UserType } from '@app/entities/user-type';
 import { UserRepository } from '@app/repositories/user-repository';
+import { getBrasiliaTime } from '@helpers/date';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
@@ -134,7 +135,7 @@ export class PrismaUserRepositories implements UserRepository {
       },
       data: {
         password: newPassword,
-        updatedAt: Date(),
+        updatedAt: getBrasiliaTime(),
       },
     });
   }
