@@ -39,8 +39,8 @@ export class CloseClassroomLock {
 
     const lock = classroom.lock;
 
-    lock.state = false;
+    lock.state = true;
 
-    await this.lockRepository.updateState(lock.id, false);
+    await this.lockRepository.updateState(lock.id, lock.state);
   }
 }

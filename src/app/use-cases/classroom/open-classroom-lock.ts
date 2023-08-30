@@ -41,9 +41,9 @@ export class OpenClassroomLock {
 
     try {
       await this.mqttService.openLock(lock.id);
-      lock.state = true;
+      lock.state = false;
 
-      await this.lockRepository.updateState(lock.id, true);
+      await this.lockRepository.updateState(lock.id, lock.state);
       // Configurando o fuso horário para Brasília (BRT - Brasília Time)
       const brazilTimeZone = 'America/Sao_Paulo';
       const options = { timeZone: brazilTimeZone };
