@@ -11,7 +11,7 @@ export class MqttService {
 
     this.client = mqtt.connect(
       // 'mqtt://ec2-52-67-169-181.sa-east-1.compute.amazonaws.com',
-      'mqtt://broker.hivemq.com',
+      'mqtt://broker.emqx.io',
       {
         port: 1883,
       },
