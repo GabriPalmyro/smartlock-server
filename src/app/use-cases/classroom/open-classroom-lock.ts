@@ -40,6 +40,13 @@ export class OpenClassroomLock {
 
     const lock = classroom.lock;
 
+    if (!lock.state) {
+      throw new HttpException(
+        'Essa sala já se encontra aberta, verifique novamente no app ou vá até o local da sala.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     try {
       const access = new Access({
         accessType: 'App',
