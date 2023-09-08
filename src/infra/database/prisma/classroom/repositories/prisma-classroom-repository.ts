@@ -73,7 +73,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
             classroom: true,
           },
           orderBy: {
-            initialTimeClass: 'desc',
+            dayOfTheWeek: 'desc',
           },
         },
         lock: true,
