@@ -1,6 +1,7 @@
 import { CreateClass } from '@app/use-cases/class/create-class';
 import { DeleteClass } from '@app/use-cases/class/delete-class';
 import { ListAllClassess } from '@app/use-cases/class/list-all-class';
+import { ListClassByTeacher } from '@app/use-cases/class/list-all-teacher-class';
 import { ListClassFromTodayByTeacher } from '@app/use-cases/class/list-today-by-teacher';
 import { UpdateClass } from '@app/use-cases/class/update-class';
 import { DatabaseModule } from '@infra/database/database.module';
@@ -17,6 +18,7 @@ import { ClassController } from './controllers/class.controller';
     UpdateClass,
     DeleteClass,
     ListAllClassess,
+    ListClassByTeacher,
   ],
 })
 export class ClassModule {}

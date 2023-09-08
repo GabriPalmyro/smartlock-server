@@ -149,4 +149,37 @@ export class PrismaClassRepositories implements ClassRepository {
 
     return classes.map(PrismaClassMapper.toDomainWithTeacherAndClassroom);
   }
+
+  async listAllClassFromTeacherId(teacherId: string): Promise<Class[]> {
+    const today = getBrasiliaTime();
+
+    const classes = await this.prismaService.class.findMany({
+      where: {
+        teacherId: teacherId,
+        initialDay: {
+          lte: today,
+        },
+        endDay: {
+          gte: today,
+        },
+      },
+      include: {
+        teacher: true,
+        classroom: {
+          include: {
+            access: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                openTime: 'asc',
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return classes.map(PrismaClassMapper.toDomainWithTeacherAndClassroom);
+  }
 }

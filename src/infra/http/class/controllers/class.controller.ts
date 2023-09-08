@@ -1,6 +1,7 @@
 import { CreateClass } from '@app/use-cases/class/create-class';
 import { DeleteClass } from '@app/use-cases/class/delete-class';
 import { ListAllClassess } from '@app/use-cases/class/list-all-class';
+import { ListClassByTeacher } from '@app/use-cases/class/list-all-teacher-class';
 import { ListClassFromTodayByTeacher } from '@app/use-cases/class/list-today-by-teacher';
 import { UpdateClass } from '@app/use-cases/class/update-class';
 import { MqttService } from '@infra/mqtt/aws-broker/mqtt.service';
@@ -29,6 +30,7 @@ export class ClassController {
     private updateClassUseCase: UpdateClass,
     private deleteClassUseCase: DeleteClass,
     private listClassFromTodayByTeacher: ListClassFromTodayByTeacher,
+    private listClassByTeacher: ListClassByTeacher,
     private listAllUseCase: ListAllClassess,
   ) {}
 
@@ -112,6 +114,17 @@ export class ClassController {
     @Param('teacherId') teacherId: string,
   ): Promise<ClassViewModel> {
     const { classes } = await this.listClassFromTodayByTeacher.execute({
+      teacherId,
+    });
+
+    return classes.map(ClassViewModel.toHTTP);
+  }
+  @HttpCode(HttpStatus.OK)
+  @Get('teacher/:teacherId')
+  async classesByTeacher(
+    @Param('teacherId') teacherId: string,
+  ): Promise<ClassViewModel> {
+    const { classes } = await this.listClassByTeacher.execute({
       teacherId,
     });
 
