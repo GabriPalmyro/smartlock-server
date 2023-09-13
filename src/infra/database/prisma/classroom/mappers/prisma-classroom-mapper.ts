@@ -4,6 +4,7 @@ import { PrismaAccessMapper } from '../../access/mappers/prisma-access-mapper';
 import { PrismaClassMapper } from '../../class/mappers/prisma-class-mapper';
 import { PrismaLockMapper } from '../../lock/mappers/prisma-lock-mappers';
 import { ClassroomWithAccess } from '../types/classroom-with-access';
+import { ClassroomWithAccessLock } from '../types/classroom-with-access-lock';
 import { ClassroomWithLockAccessClass } from '../types/classroom-with-lock-access-class';
 
 export class PrismaClassroomMapper {
@@ -33,6 +34,16 @@ export class PrismaClassroomMapper {
       access: raw.access.map(PrismaAccessMapper.toDomain),
       lock: raw.lock != null ? PrismaLockMapper.toDomain(raw.lock) : null,
       classes: raw.Class.map(PrismaClassMapper.toDomain),
+    });
+  }
+
+  static toDomainWithAccessAndLock(raw: ClassroomWithAccessLock): Classroom {
+    return new Classroom({
+      id: raw.id,
+      name: raw.name,
+      block: raw.block,
+      access: raw.access.map(PrismaAccessMapper.toDomain),
+      lock: raw.lock != null ? PrismaLockMapper.toDomain(raw.lock) : null,
     });
   }
 

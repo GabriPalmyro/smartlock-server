@@ -8,6 +8,8 @@ export class ClassroomViewModel {
       id: classroom.id,
       block: classroom.block,
       name: classroom.name,
+      lock:
+        classroom.lock != null ? LockViewModel.toHTTP(classroom.lock) : null,
       access:
         classroom.access != null
           ? classroom.access.map((value) => {

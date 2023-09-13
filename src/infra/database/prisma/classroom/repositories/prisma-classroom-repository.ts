@@ -29,9 +29,14 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
           equals: block.toUpperCase(),
         },
       },
+      orderBy: {
+        name: 'asc',
+      },
       include: {
+        lock: true,
         access: {
           include: {
+            classroom: true,
             user: true,
           },
           orderBy: {
@@ -41,7 +46,7 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
       },
     });
 
-    return classrooms.map(PrismaClassroomMapper.toDomain);
+    return classrooms.map(PrismaClassroomMapper.toDomainWithAccessAndLock);
   }
 
   async create(classroom: Classroom): Promise<string> {
@@ -98,9 +103,14 @@ export class PrismaClassroomRepositories implements ClassroomRepository {
         block: block,
         name: name,
       },
+      orderBy: {
+        name: 'asc',
+      },
       include: {
+        lock: true,
         access: {
           include: {
+            classroom: true,
             user: true,
           },
           orderBy: {
