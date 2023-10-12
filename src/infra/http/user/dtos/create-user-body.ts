@@ -3,8 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsString,
-  Length,
-  Matches
+  Length
 } from 'class-validator';
 
 export class CreateUserBody {
@@ -25,9 +24,9 @@ export class CreateUserBody {
   
   @IsString()
   @Length(5, 30, {message: 'A senha deve ter entre 5 a 30 caracteres'})
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'A senha informada é muito fraca',
-  })
+  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  //   message: 'A senha informada é muito fraca',
+  // })
   @ApiProperty({
     description: 'Senha do novo usuário',
     example: 'SenhaTeste2023#',
