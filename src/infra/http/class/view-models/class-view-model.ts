@@ -7,6 +7,7 @@ export class ClassViewModel {
     return {
       id: classModel.id,
       subject: classModel.subject,
+      name: classModel.name,
       dayOfTheWeek: classModel.dayOfTheWeek,
       initialDay: classModel.initialDay,
       endDay: classModel.endDay,
@@ -21,6 +22,7 @@ export class ClassViewModel {
     return {
       id: classModel.id,
       subject: classModel.subject,
+      name: classModel.name,
       dayOfTheWeek: classModel.dayOfTheWeek,
       initialDay: classModel.initialDay,
       endDay: classModel.endDay,

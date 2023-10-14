@@ -4,6 +4,7 @@ import { User } from './user';
 export interface ClassProps {
   id?: string;
   subject: string;
+  name?: string;
   dayOfTheWeek: number;
   initialDay: Date;
   endDay: Date;
@@ -36,6 +37,14 @@ export class Class {
 
   public set subject(subject: string) {
     this.props.subject = subject;
+  }
+
+  public get name(): string {
+    return this.props.name;
+  }
+
+  public set name(name: string) {
+    this.props.name = name;
   }
 
   public get dayOfTheWeek(): number {

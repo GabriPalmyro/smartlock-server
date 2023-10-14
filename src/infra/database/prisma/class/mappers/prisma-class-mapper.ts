@@ -22,6 +22,7 @@ export class PrismaClassMapper {
     return new Class({
       id: raw.id,
       subject: raw.subject,
+      name: raw.name,
       initialDay: raw.initialDay,
       endDay: raw.endDay,
       initialTimeClass: raw.initialTimeClass,
@@ -36,6 +37,7 @@ export class PrismaClassMapper {
     return new Class({
       id: raw.id,
       subject: raw.subject,
+      name: raw.name,
       initialDay: raw.initialDay,
       endDay: raw.endDay,
       initialTimeClass: raw.initialTimeClass,
