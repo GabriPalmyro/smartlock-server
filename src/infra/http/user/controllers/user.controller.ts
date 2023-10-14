@@ -18,6 +18,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserBody } from '../dtos/create-user-body';
 import { LoginUserBody } from '../dtos/login-user-body';
 import { UpdateUserBody } from '../dtos/update-user-body';
+import { TeacherViewModel } from '../view-models/teacher-view-model';
 import { UserViewModel } from '../view-models/user-view-model';
 
 @ApiTags('user')
@@ -127,9 +128,9 @@ export class UserController {
 
   @Get('all/teachers')
   async listTeachers(): Promise<UserViewModel[]> {
-    const { users } = await this.listAllTeachers.execute();
+    const { teachers } = await this.listAllTeachers.execute();
 
-    return users.map(UserViewModel.toHTTP);
+    return teachers.map(TeacherViewModel.toHTTP);
   }
 
   @Get(':id')

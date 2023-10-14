@@ -1,9 +1,11 @@
+import { Teacher } from '@app/entities/teacher';
 import { User } from '@app/entities/user';
 import { UserType } from '@app/entities/user-type';
 import { UserRepository } from '@app/repositories/user-repository';
 import { getBrasiliaTime } from '@helpers/date';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
+import { PrismaTeacherMapper } from '../mappers/prisma-teacher-mapper';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 import { PrismaUserTypeMapper } from '../mappers/prisma-user-type-mapper';
 @Injectable()
@@ -28,15 +30,35 @@ export class PrismaUserRepositories implements UserRepository {
     return users.map(PrismaUserMapper.toDomain);
   }
 
-  async listAllTeachers(): Promise<User[]> {
-    const users = await this.prismaService.user.findMany({
+  async listAllTeachers(): Promise<Teacher[]> {
+    const teachers = await this.prismaService.user.findMany({
       where: {
         userType: {
           type: 'Doscente',
         },
       },
+      include: {
+        class: {
+          include: {
+            classroom: {
+              include: {
+                access: {
+                  include: {
+                    user: true,
+                  },
+                  orderBy: {
+                    openTime: 'asc',
+                  },
+                },
+              },
+            },
+            teacher: true,
+          },
+        },
+      },
     });
-    return users.map(PrismaUserMapper.toDomain);
+
+    return teachers.map(PrismaTeacherMapper.toDomain);
   }
 
   async findUserTypeById(typeId: string): Promise<UserType> {

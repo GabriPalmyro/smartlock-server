@@ -37,6 +37,7 @@ model User {
 model Class {
   id               String     @id @default(uuid())
   subject          String
+  name             String?
   dayOfTheWeek     Int        @map("day_of_week")
   initialDay       DateTime   @map("initial_day")
   endDay           DateTime   @map("end_day")
