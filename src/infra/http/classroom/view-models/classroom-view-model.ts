@@ -16,6 +16,7 @@ export class ClassroomViewModel {
               return {
                 id: value.id,
                 access_type: value.accessType,
+                user: UserViewModel.toHTTP(value.user),
                 open_time: value.openTime,
                 close_time: value.closeTime,
               };
