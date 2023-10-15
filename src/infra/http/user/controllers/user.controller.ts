@@ -1,4 +1,5 @@
 import { CreateUser } from '@app/use-cases/user/create-user';
+import { DeleteById } from '@app/use-cases/user/delete-user';
 import { GetUserById } from '@app/use-cases/user/get-user-by-id';
 import { ListAllTeachers } from '@app/use-cases/user/list-all-teachers';
 import { ListAllUsers } from '@app/use-cases/user/list-all-users';
@@ -7,6 +8,7 @@ import { UpdateUser } from '@app/use-cases/user/update-user';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -27,6 +29,7 @@ export class UserController {
   constructor(
     private createUser: CreateUser,
     private getUserById: GetUserById,
+    private deleteUserById: DeleteById,
     private updateUserUseCase: UpdateUser,
     private loginWithCodeAndPassword: LoginWithCodeAndPassword,
     private listAllUsers: ListAllUsers,
@@ -152,5 +155,24 @@ export class UserController {
     });
 
     return UserViewModel.toHTTP(user);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    description: 'Deleta um usuário pelo id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário Deletado',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Usuário não encontrado',
+  })
+  async deleteUserByID(@Param('id') userId: string): Promise<void> {
+    await this.deleteUserById.execute({
+      userId,
+    });
   }
 }

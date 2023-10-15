@@ -1,4 +1,5 @@
 import { CreateUser } from '@app/use-cases/user/create-user';
+import { DeleteById } from '@app/use-cases/user/delete-user';
 import { GetUserById } from '@app/use-cases/user/get-user-by-id';
 import { ListAllTeachers } from '@app/use-cases/user/list-all-teachers';
 import { ListAllUsers } from '@app/use-cases/user/list-all-users';
@@ -19,6 +20,7 @@ import { UserController } from './controllers/user.controller';
     ListAllUsers,
     UpdateUser,
     ListAllTeachers,
+    DeleteById,
   ],
 })
 export class UserModule {}
