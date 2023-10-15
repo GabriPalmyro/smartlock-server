@@ -41,7 +41,7 @@ export class CreateLock {
 
     const lockModel = new Lock({
       name,
-      state: false,
+      state: true,
       classroom: classroom,
     });
 
