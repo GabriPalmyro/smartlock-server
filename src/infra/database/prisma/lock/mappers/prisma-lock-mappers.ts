@@ -8,7 +8,7 @@ export class PrismaLockMapper {
     return {
       id: lock.id,
       name: lock.name,
-      state: lock.state,
+      isClosed: lock.state,
       classroomId: lock.classroom.id,
     };
   }
