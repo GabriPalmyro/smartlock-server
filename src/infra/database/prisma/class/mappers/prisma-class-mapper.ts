@@ -44,7 +44,7 @@ export class PrismaClassMapper {
       endTimeClass: raw.endTimeClass,
       dayOfTheWeek: raw.dayOfTheWeek,
       teacher: PrismaUserMapper.toDomain(raw.teacher),
-      classroom: PrismaClassroomMapper.toDomain(raw.classroom),
+      classroom: PrismaClassroomMapper.toDomainWithAccessAndLock(raw.classroom),
     });
   }
 }

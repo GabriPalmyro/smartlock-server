@@ -6,8 +6,10 @@ export type TeacherType = Prisma.UserGetPayload<{
       include: {
         classroom: {
           include: {
+            lock: true;
             access: {
               include: {
+                classroom: true;
                 user: true;
               };
               orderBy: {

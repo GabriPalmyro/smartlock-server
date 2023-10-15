@@ -42,8 +42,10 @@ export class PrismaUserRepositories implements UserRepository {
           include: {
             classroom: {
               include: {
+                lock: true,
                 access: {
                   include: {
+                    classroom: true,
                     user: true,
                   },
                   orderBy: {

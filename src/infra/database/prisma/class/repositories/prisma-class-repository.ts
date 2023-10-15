@@ -25,8 +25,10 @@ export class PrismaClassRepositories implements ClassRepository {
         teacher: true,
         classroom: {
           include: {
+            lock: true,
             access: {
               include: {
+                classroom: true,
                 user: true,
               },
               orderBy: {
@@ -47,8 +49,10 @@ export class PrismaClassRepositories implements ClassRepository {
         teacher: true,
         classroom: {
           include: {
+            lock: true,
             access: {
               include: {
+                classroom: true,
                 user: true,
               },
               orderBy: {
@@ -70,8 +74,10 @@ export class PrismaClassRepositories implements ClassRepository {
         teacher: true,
         classroom: {
           include: {
+            lock: true,
             access: {
               include: {
+                classroom: true,
                 user: true,
               },
               orderBy: {
@@ -134,8 +140,10 @@ export class PrismaClassRepositories implements ClassRepository {
         teacher: true,
         classroom: {
           include: {
+            lock: true,
             access: {
               include: {
+                classroom: true,
                 user: true,
               },
               orderBy: {
@@ -167,8 +175,10 @@ export class PrismaClassRepositories implements ClassRepository {
         teacher: true,
         classroom: {
           include: {
+            lock: true,
             access: {
               include: {
+                classroom: true,
                 user: true,
               },
               orderBy: {

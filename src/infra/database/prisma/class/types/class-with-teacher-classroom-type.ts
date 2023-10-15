@@ -5,8 +5,10 @@ export type ClassWithTeacherAndClassroom = Prisma.ClassGetPayload<{
     teacher: true;
     classroom: {
       include: {
+        lock: true;
         access: {
           include: {
+            classroom: true;
             user: true;
           };
           orderBy: {
