@@ -9,6 +9,14 @@ import {
 
 export class CreateClassBody {
     @IsString()
+    @Length(5, 6, { message: 'A sigla da matéria' })
+    @ApiProperty({
+        description: 'A sigla da matéria que está sendo criada',
+        example: 'PROG1'
+    })
+    name: string;
+
+    @IsString()
     @Length(1, 120, { message: 'O nome da materia da aula' })
     @ApiProperty({
         description: 'A materia da aula',

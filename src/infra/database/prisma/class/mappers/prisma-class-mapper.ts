@@ -7,6 +7,7 @@ import { ClassWithTeacherAndClassroom } from '../types/class-with-teacher-classr
 export class PrismaClassMapper {
   static toPrisma(classModel: Class, teacherId: string, classroomId: string) {
     return {
+      name: classModel.name,
       subject: classModel.subject,
       dayOfTheWeek: classModel.dayOfTheWeek,
       initialDay: classModel.initialDay,

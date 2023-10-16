@@ -39,6 +39,7 @@ export class ClassController {
   @Post()
   async create(@Body() body: CreateClassBody): Promise<ClassViewModel> {
     const {
+      name,
       subject,
       initialDay,
       endDay,
@@ -50,6 +51,7 @@ export class ClassController {
     } = body;
 
     const { classCreated } = await this.createClass.execute({
+      name,
       subject,
       initialDay,
       endDay,

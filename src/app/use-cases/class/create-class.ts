@@ -3,6 +3,7 @@ import { ClassRepository } from '@app/repositories/class-repository';
 import { Injectable } from '@nestjs/common';
 
 interface CreateClassRequest {
+  name;
   subject: string;
   initialDay: Date;
   endDay: Date;
@@ -23,6 +24,7 @@ export class CreateClass {
 
   async execute(request: CreateClassRequest): Promise<CreateClassResponse> {
     const {
+      name,
       subject,
       initialDay,
       endDay,
@@ -34,6 +36,7 @@ export class CreateClass {
     } = request;
 
     const classModel = new Class({
+      name: name,
       subject,
       initialDay,
       endDay,
