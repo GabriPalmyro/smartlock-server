@@ -1,0 +1,59 @@
+import { Classroom } from './classroom';
+
+export interface AlertsProps {
+  id?: string;
+  classroom?: Classroom;
+  message: string;
+  createdAt?: Date;
+  classroomId?: string;
+}
+
+export class Alerts {
+  private props: AlertsProps;
+
+  constructor(props: AlertsProps) {
+    this.props = {
+      ...props,
+    };
+  }
+
+  public get id(): string {
+    return this.props.id;
+  }
+
+  public set id(id: string) {
+    this.props.id = id;
+  }
+
+  public get classroom(): Classroom {
+    return this.props.classroom;
+  }
+
+  public set classroom(classroom: Classroom) {
+    this.props.classroom = classroom;
+  }
+
+  public get message(): string {
+    return this.props.message;
+  }
+
+  public set message(message: string) {
+    this.props.message = message;
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
+  public set createdAt(createdAt: Date) {
+    this.props.createdAt = createdAt;
+  }
+
+  public get classroomId(): string {
+    return this.props.classroomId;
+  }
+
+  public set classroomId(classroomId: string) {
+    this.props.classroomId = classroomId;
+  }
+}

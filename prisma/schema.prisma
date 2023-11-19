@@ -58,6 +58,7 @@ model Classroom {
   lock          Lock?
   temporaryCode TemporaryCode[]
   access        Access[]
+  Alerts        Alerts[]
 }
 
 model Lock {
@@ -94,4 +95,13 @@ model Access {
   userId          String  @map("user_id")
   temporaryCodeId String? @map("temporary_code_id")
   classroomId     String  @map("classroom_id")
+}
+
+model Alerts {
+  id        String    @id @default(uuid())
+  classroom Classroom @relation(fields: [classroomId], references: [id])
+  message   String    @map("message")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  classroomId String @map("classroom_id")
 }
