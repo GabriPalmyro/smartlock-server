@@ -8,8 +8,8 @@ import { PrismaAlertsMapper } from '../mappers/prisma-alerts-mapper';
 @Injectable()
 export class PrismaAlertsRepositories implements AlertRepository {
   constructor(private prismaService: PrismaService) {}
-  async create(alert: Alerts): Promise<void> {
-    const prismaAlerta = PrismaAlertsMapper.toPrisma(alert);
+  async create(message: string, classroomId: string): Promise<void> {
+    const prismaAlerta = PrismaAlertsMapper.toPrisma(message, classroomId);
 
     await this.prismaService.alerts.create({
       data: prismaAlerta,
@@ -25,7 +25,12 @@ export class PrismaAlertsRepositories implements AlertRepository {
   }
 
   async listAll(): Promise<Alerts[]> {
-    const alerts = await this.prismaService.alerts.findMany();
+    const alerts = await this.prismaService.alerts.findMany({
+      include: {
+        classroom: true,
+      },
+    });
+
     return alerts.map(PrismaAlertsMapper.toDomain);
   }
 

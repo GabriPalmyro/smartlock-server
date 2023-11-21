@@ -1,7 +1,7 @@
 import { Alerts } from '@app/entities/alert';
 
 export abstract class AlertRepository {
-  abstract create(alert: Alerts): Promise<void>;
+  abstract create(message: string, classroomId: string): Promise<void>;
 
   abstract update(alert: Alerts): Promise<void>;
 

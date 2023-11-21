@@ -5,7 +5,6 @@ export interface AlertsProps {
   classroom?: Classroom;
   message: string;
   createdAt?: Date;
-  classroomId?: string;
 }
 
 export class Alerts {
@@ -47,13 +46,5 @@ export class Alerts {
 
   public set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
-  }
-
-  public get classroomId(): string {
-    return this.props.classroomId;
-  }
-
-  public set classroomId(classroomId: string) {
-    this.props.classroomId = classroomId;
   }
 }

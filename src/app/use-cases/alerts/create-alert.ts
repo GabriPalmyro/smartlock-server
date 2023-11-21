@@ -1,4 +1,3 @@
-import { Alerts } from '@app/entities/alert';
 import { AlertRepository } from '@app/repositories/alerts_repository';
 import { Injectable } from '@nestjs/common';
 
@@ -14,11 +13,6 @@ export class CreateAlert {
   async execute(request: CreateAlertRequest): Promise<void> {
     const { message, classroomId } = request;
 
-    const alertModel = new Alerts({
-      message,
-      classroomId,
-    });
-
-    await this.alertRepository.create(alertModel);
+    await this.alertRepository.create(message, classroomId);
   }
 }

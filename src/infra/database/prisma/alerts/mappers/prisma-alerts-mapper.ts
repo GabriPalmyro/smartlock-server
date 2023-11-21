@@ -1,19 +1,20 @@
 import { Alerts } from '@app/entities/alert';
-import { Alerts as RawAlerts } from '@prisma/client';
+import { PrismaClassroomMapper } from '../../classroom/mappers/prisma-classroom-mapper';
+import { AlertWithClassroomType } from '../types/alert-with-classroom.type';
 
 export class PrismaAlertsMapper {
-  static toPrisma(raw: Alerts) {
+  static toPrisma(message: string, classroomId: string) {
     return {
-      message: raw.message,
-      classroomId: raw.classroomId,
+      message: message,
+      classroomId: classroomId,
     };
   }
 
-  static toDomain(raw: RawAlerts): Alerts {
+  static toDomain(raw: AlertWithClassroomType): Alerts {
     return new Alerts({
       id: raw.id,
       message: raw.message,
-      classroomId: raw.classroomId,
+      classroom: PrismaClassroomMapper.toDomain(raw.classroom),
       createdAt: raw.createdAt,
     });
   }

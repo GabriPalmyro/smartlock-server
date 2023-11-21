@@ -24,6 +24,17 @@ export class ClassroomViewModel {
           : [],
     };
   }
+
+  static toHTTPWithoutAccess(classroom: Classroom) {
+    return {
+      id: classroom.id,
+      block: classroom.block,
+      name: classroom.name,
+      lock:
+        classroom.lock != null ? LockViewModel.toHTTP(classroom.lock) : null,
+    };
+  }
+
   static toHTTPWithInfos(classroom: Classroom) {
     return {
       id: classroom.id,
